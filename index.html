@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cercal House</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #FFFDF7;
+            color: #3C3633;
+
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .bg-cerulean {
+            background-color: #007BA7;
+        }
+
+        .font-light {
+            font-weight: 200;
+        }
+
+        .text-8xl {
+            font-size: 6rem;
+            line-height: 1;
+        }
+
+        .grid-cols-4 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .text-10xl {
+            font-size: 11rem;
+            line-height: 1;
+        }
+
+        /* Add responsive styles */
+        @media (max-width: 1280px) {
+            .text-10xl {
+                font-size: 8rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .text-10xl {
+                font-size: 6rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .text-8xl {
+                font-size: 4rem;
+            }
+
+            .text-10xl {
+                font-size: 5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .text-10xl {
+                font-size: 4rem;
+            }
+        }
+
+        .dark-section {
+            background-color: #3C3633;
+            color: white;
+        }
+
+        .text-dark {
+            color: #3C3633;
+        }
+
+        footer {
+            overflow: hidden;
+        }
+
+        footer h2 {
+            margin-left: -0.07em;
+            /* Adjust as needed to align the text properly */
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body class="font-sans">
+    <div class="relative min-h-screen bg-cover bg-center"
+        style="background-image: url('https://picsum.photos/1920/1080');">
+        <nav class="absolute w-full py-4 px-6 flex flex-col md:flex-row justify-between items-center bg-transparent">
+            <div class="text-white text-xl font-bold mb-4 md:mb-0">Cercal Homestay</div>
+            <div class="space-y-2 md:space-y-0 md:space-x-6 text-white text-sm flex flex-col md:flex-row items-center">
+                <a href="#about">About</a>
+                <a href="#accommodation">Accommodation</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#experiences">Experiences</a>
+                <a href="#search" class="mr-4">🔍 Search</a>
+                <a href="#amenities">Amenities</a>
+                <a href="#sightseeing">Sightseeing</a>
+                <a href="#book" class="bg-white text-blue-600 px-3 py-1 rounded">Book now</a>
+            </div>
+        </nav>
+
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white w-full">
+            <h1 class="font-playfair text-7xl sm:text-8xl font-bold mb-4">Cercal House</h1>
+            <p class="text-xl uppercase tracking-widest">Stay where the world can't find you</p>
+        </div>
+
+    </div>
+
+    <section class="container mx-auto px-4 py-8 md:py-16 my-8 md:my-16">
+        <div class="container mx-auto px-4 py-8 md:py-16">
+            <h2 class="text-2xl md:text-3xl font-light mb-4">Designed by atelier data, cercal house is a breathtaking
+                minimalist residence</h2>
+        </div>
+        <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2 pr-8">
+                <p class="text-sm text-gray-500 mb-4">• Architectural Masterpiece</p>
+            </div>
+            <div class="md:w-1/2 mt-8 md:mt-0">
+                <div class="shadow-lg rounded-lg overflow-hidden">
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="https://picsum.photos/800/600?random=1" alt="Natural Light"
+                                    class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
+                                    <p class="text-sm font-semibold">Natural Light</p>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://picsum.photos/800/600?random=2" alt="Minimalist Elegance"
+                                    class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
+                                    <p class="text-sm font-semibold">Minimalist Elegance</p>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <img src="https://picsum.photos/800/600?random=3" alt="Sliding Partitions"
+                                    class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
+                                    <p class="text-sm font-semibold">Sliding Partitions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative h-screen">
+        <img src="https://picsum.photos/1920/1080?random=4" alt="Cercal House Landscape"
+            class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent">
+            <div class="container mx-auto px-4 h-full flex flex-col justify-between">
+                <div class="pt-16">
+                    <h2 class="text-white text-4xl font-light leading-tight max-w-2xl">
+                        Architectural masterpiece harmoniously merges with the surrounding landscape
+                    </h2>
+                </div>
+                <div class="pb-8 flex justify-between items-end">
+                    <p class="text-white text-sm">• Embracing Minimalism in Nature</p>
+                    <a href="#" class="text-white text-sm underline">Discover more ›</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-16 relative">
+        <div class="grid grid-cols-4 gap-4">
+            <div class="col-span-1">
+                <div class="h-100 mb-2 overflow-hidden">
+                    <img src="https://picsum.photos/400/800?random=1" alt="Seamless" class="w-full h-full object-cover">
+                </div>
+                <h3 class="text-sm font-light mb-1">Seamless</h3>
+                <p class="text-xs text-gray-600">Harmoniously integrated with the natural surroundings</p>
+            </div>
+            <div class="col-span-3 flex justify-end items-start">
+                <h2 class="text-10xl font-bold leading-none">Experience</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 left-0 right-0 px-4" style="margin-top: -200px;">
+            <div class="col-span-4 flex justify-center items-center mb-8">
+                <div class="w-1/2">
+                    <div class="h-80 w-64 overflow-hidden mb-2 mx-auto">
+                        <img src="https://picsum.photos/600/900?random=2" alt="Open Space"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="w-64 mx-auto">
+                        <h3 class="text-sm font-light mb-1">Open Space</h3>
+                        <p class="text-xs text-gray-600">Bright rooms connect and let natural light bathe the interiors
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 mt-16 mb-16" style="margin-top: -300px;">
+            <div class="col-span-3 flex flex-col justify-end">
+                <h2 class="text-10xl font-bold leading-none">Elegance</h2>
+            </div>
+            <div class="col-span-1">
+                <h3 class="text-sm font-light mb-1">Refined Living</h3>
+                <p class="text-xs text-gray-600 mb-2">Experience the epitome of sophisticated design</p>
+                <div class="h-100 mb-2 overflow-hidden">
+                    <img src="https://picsum.photos/400/800?random=3" alt="Elegant Interior"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4 mt-8 pt-16 pl-16">
+            <div class="col-span-3 flex flex-col items-end">
+                <div class="w-2/3 h-48 mb-2 overflow-hidden pl-16">
+                    <img src="https://picsum.photos/800/400?random=4" alt="Simplicity in Design"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="w-2/3 pl-16">
+                    <h3 class="text-sm font-light mb-1">Simplicity in Design</h3>
+                    <p class="text-xs text-gray-600">Embracing minimalism in every detail</p>
+                </div>
+            </div>
+            <div class="col-span-1 flex justify-end items-end">
+                <h2 class="text-10xl font-bold leading-none">In</h2>
+            </div>
+        </div>
+
+
+        <div class="grid grid-cols-4 gap-4 mt-16" style="margin-top: -200px;">
+            <div class="col-span-1">
+                <h3 class="text-sm font-light mb-2">Natural Elements</h3>
+                <div class="h-100 w-64 overflow-hidden">
+                    <img src="https://picsum.photos/400/800?random=5" alt="Natural Elements"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+            <div class="col-span-3 flex justify-end items-end">
+                <h2 class="text-10xl font-bold leading-none">Simplicity</h2>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="dark-section text-white">
+        <div class="container mx-auto px-4 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-4">Cercal house invites you to dive into a world of <span
+                                class="text-gray-400">serenity and tranquility</span></h2>
+                        <p class="text-sm mb-8">The design reflects the architect's deep understanding and respect for
+                            the surrounding natural landscape, creating an atmosphere that promotes peace and harmony.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <div
+                                class="border border-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Tradition</h3>
+                            <p class="text-sm">Emphasis on the preservation of a traditional structural archetype</p>
+                        </div>
+                        <div>
+                            <div
+                                class="border border-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Innovation</h3>
+                            <p class="text-sm">Holistic approach to architectural design allows for new spatial
+                                interpretations</p>
+                        </div>
+                    </div>
+                    <a href="#" class="text-sm underline">Book now →</a>
+                </div>
+                <div class="relative">
+                    <img src="https://picsum.photos/800/600?random=6" alt="Cercal House"
+                        class="w-full h-full object-cover">
+                    <p class="absolute top-4 right-4 text-xs bg-white bg-opacity-75 text-black py-1 px-2 rounded">Unveil
+                        The Tranquility of Cercal House ●</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-16">
+        <div class="mb-4">
+            <span class="text-sm text-dark font-bold">• Schedule a visit</span>
+        </div>
+        <div class="flex justify-end items-end">
+            <h2 class="text-dark text-10xl  mb-2">Contact us</h2>
+        </div>
+        <hr class="border-t border-gray-300 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-sm text-gray-500 mb-2">Phone number</h3>
+                <p class="text-dark text-xl">917-888-00192</p>
+            </div>
+            <div class="grid grid-cols-1 gap-8">
+                <div>
+                    <h3 class="text-sm text-gray-500 mb-2">Address</h3>
+                    <p class="text-dark">Cercal do Alentejo,<br>Portugal</p>
+                </div>
+                <div>
+                    <h3 class="text-sm text-gray-500 mb-2">Email address</h3>
+                    <p class="text-dark">cercal.house@gmail.com</p>
+                </div>
+                <div>
+                    <h3 class="text-sm text-gray-500 mb-2">Instagram</h3>
+                    <p class="text-dark">@cercal.house</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full h-80">
+        <img src="https://picsum.photos/800/600?random=6" alt="Cercal House landscape" class="w-full h-full object-cover">
+    </section>
+
+    <footer class="text-white py-8 dark-section">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-4 text-xs">
+                <span>© Copyright 2024</span>
+                <div class="w-full bg-white mx-2"><hr></div>
+                <span>All rights reserved</span>
+            </div>
+            <nav class="flex justify-between mb-8 text-sm">
+                <a href="#about">About</a>
+                <a href="#accommodation">Accommodation</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#experiences">Experiences</a>
+                <a href="#amenities">Amenities</a>
+                <a href="#sightseeing">Sightseeing</a>
+            </nav>
+            <div class="flex justify-center items-center">
+                <h2 class="font-playfair text-8xl sm:text-9xl md:text-10xl lg:text-[12rem] xl:text-[14rem] font-bold leading-none">
+                    Cercal House
+                </h2>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const swiper = new Swiper('.swiper', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+
+</body>
+
+</html>
