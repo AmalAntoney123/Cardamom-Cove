@@ -12,21 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
     <style>
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
-        }
-
         body {
             background-color: #FFFDF7;
             color: #3C3633;
-        }
-
-        /* Force all elements to stay within the viewport width */
-        * {
-            max-width: 100vw;
-            box-sizing: border-box;
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
         }
 
         .font-playfair {
@@ -483,23 +474,6 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
-        });
-
-        // Function to force layout recalculation
-        function forceReflow() {
-            document.body.style.display = 'none';
-            document.body.offsetHeight; // Force a reflow
-            document.body.style.display = '';
-        }
-
-        // Call on page load
-        window.addEventListener('load', forceReflow);
-
-        // Call when scrolling stops
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(forceReflow, 100);
         });
     </script>
 
