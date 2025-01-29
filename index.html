@@ -1,482 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cardamom Cove</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cardamom Cove - Luxury Resort in Idukki</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts for Premium Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS (Animate On Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom Styles -->
     <style>
-        body {
-            background-color: #FFFDF7;
-            color: #3C3633;
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
-        }
-
-        .font-playfair {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .bg-cerulean {
-            background-color: #007BA7;
-        }
-
-        .font-light {
-            font-weight: 200;
-        }
-
-        .text-8xl {
-            font-size: 6rem;
-            line-height: 1;
-        }
-
-        .grid-cols-4 {
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-        }
-
-        .text-10xl {
-            font-size: 11rem;
-            line-height: 1;
-        }
-
-        /* Add responsive styles */
-        @media (max-width: 1280px) {
-            .text-10xl {
-                font-size: 8rem;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .text-10xl {
-                font-size: 6rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .text-8xl {
-                font-size: 4rem;
-            }
-
-            .text-10xl {
-                font-size: 5rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .text-10xl {
-                font-size: 4rem;
-            }
-        }
-
-        .dark-section {
-            background-color: #3C3633;
-            color: white;
-        }
-
-        .text-dark {
-            color: #3C3633;
-        }
-
-        footer {
-            overflow: hidden;
-        }
-
-        footer h2 {
-            margin-left: -0.07em;
-            /* Adjust as needed to align the text properly */
-            white-space: nowrap;
-        }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .bg-luxury-green { background-color: #0a2b24; }
+        .text-luxury-gold { color: #c5a467; }
+        .border-luxury-gold { border-color: #c5a467; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .hero-overlay { background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8)); }
     </style>
 </head>
-
-<body class="font-sans">
-    <div class="relative min-h-screen bg-cover bg-center flex items-center justify-center"
-        style="background-image: url('https://picsum.photos/1920/1080');">
-        <nav class="fixed top-0 left-0 w-full py-4 px-6 bg-black bg-opacity-75 z-50" data-aos="fade-down"
-            data-aos-duration="1000">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="text-white text-xl font-bold">Cardamom Cove</div>
-                <button id="menu-toggle" class="text-white lg:hidden focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
-                <div id="menu-items" class="hidden lg:flex lg:items-center lg:w-auto">
-                    <div class="text-sm lg:flex-grow">
-                        <a href="#about"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">About</a>
-                        <a href="#accommodation"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">Rooms</a>
-                        <a href="#gallery"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">Gallery</a>
-                        <a href="#experiences"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">Activities</a>
-                        <a href="#amenities"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">Amenities</a>
-                        <a href="#sightseeing"
-                            class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-300 mr-4">Attractions</a>
-                    </div>
-                    <div>
-                        <a href="#book"
-                            class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-green-600 hover:bg-white mt-4 lg:mt-0">Reserve
-                            now</a>
-                    </div>
+<body class="font-inter bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-playfair text-2xl text-luxury-gold">The Cardamom Cove</span>
                 </div>
-            </div>
-        </nav>
-
-        <div id="mobile-menu"
-            class="fixed inset-0 bg-black bg-opacity-75 z-40 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-            <div class="flex items-center justify-center h-full">
-                <div class="text-center transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
-                    id="mobile-menu-content">
-                    <a href="#about" class="block text-white text-xl mb-4">About</a>
-                    <a href="#accommodation" class="block text-white text-xl mb-4">Rooms</a>
-                    <a href="#gallery" class="block text-white text-xl mb-4">Gallery</a>
-                    <a href="#experiences" class="block text-white text-xl mb-4">Activities</a>
-                    <a href="#amenities" class="block text-white text-xl mb-4">Amenities</a>
-                    <a href="#sightseeing" class="block text-white text-xl mb-4">Attractions</a>
-                    <a href="#book"
-                        class="inline-block text-xl px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-green-600 hover:bg-white mt-4">Reserve
-                        now</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#rooms" class="text-gray-200 hover:text-luxury-gold transition-colors">Rooms</a>
+                    <a href="#about" class="text-gray-200 hover:text-luxury-gold transition-colors">About</a>
+                    <a href="#contact" class="text-gray-200 hover:text-luxury-gold transition-colors">Contact</a>
+                    <a href="#book" class="text-luxury-gold border border-luxury-gold px-6 py-2 rounded-full hover:bg-luxury-gold hover:text-luxury-green transition-colors">Book Now</a>
                 </div>
             </div>
         </div>
+    </nav>
 
-        <div class="text-center text-white w-full px-4" data-aos="fade-up" data-aos-duration="1000"
-            data-aos-delay="500">
-            <h1 class="font-playfair text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4">Cardamom Cove</h1>
-            <p class="text-xl uppercase tracking-widest">Embrace the serenity of the hills</p>
+    <!-- Hero Section -->
+    <div class="relative h-screen">
+        <div class="absolute inset-0 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
+                 class="w-full h-full object-cover" 
+                 alt="Western Ghats View">
+            <div class="absolute inset-0 hero-overlay"></div>
+        </div>
+        <div class="relative h-full flex items-center">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h1 class="font-playfair text-6xl text-white mb-6" data-aos="fade-up">Welcome to The Cardamom Cove</h1>
+                <p class="text-xl text-gray-200 mb-8" data-aos="fade-up" data-aos-delay="100">
+                    Nestled in the heart of Kauwanty, Idukki, amidst a lush cardamom estate, our resort offers breathtaking views of the Western Ghats and the serene Idukki Reservoir. Experience luxury in the lap of nature.
+                </p>
+                <button class="bg-transparent border-2 border-luxury-gold text-luxury-gold px-8 py-3 rounded-full text-lg hover:bg-luxury-gold hover:text-luxury-green transition-colors" data-aos="fade-up" data-aos-delay="200">
+                    Explore Villas
+                </button>
+            </div>
         </div>
     </div>
 
-    <section class="container mx-auto px-4 py-8 md:py-16 my-8 md:my-16" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container mx-auto px-4 py-8 md:py-16">
-            <h2 class="text-2xl md:text-3xl font-light mb-4" data-aos="fade-right" data-aos-duration="800">Nestled in
-                the heart of Idukki, Cardamom Cove offers a tranquil escape amidst nature's bounty</h2>
-        </div>
-        <div class="w-full bg-white mx-2 mb-8">
-            <hr>
-        </div>
-
-        <div class="flex flex-col md:flex-row">
-            <div class="md:w-1/2 pr-8" data-aos="fade-right" data-aos-duration="800">
-                <p class="text-sm text-gray-500 mb-4">• Panoramic Hill Views</p>
-            </div>
-            <div class="md:w-1/2 mt-8 md:mt-0" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
-                <div class="shadow-lg rounded-lg overflow-hidden">
-                    <div class="swiper">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <img src="https://picsum.photos/800/600?random=1" alt="Misty Mountains"
-                                    class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
-                                    <p class="text-sm font-semibold">Misty Mountains</p>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="https://picsum.photos/800/600?random=2" alt="Lush Greenery"
-                                    class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
-                                    <p class="text-sm font-semibold">Lush Greenery</p>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <img src="https://picsum.photos/800/600?random=3" alt="Cozy Interiors"
-                                    class="w-full h-full object-cover">
-                                <div class="absolute bottom-0 left-0 bg-white bg-opacity-75 p-4">
-                                    <p class="text-sm font-semibold">Cozy Interiors</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">About The Cardamom Cove</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="text-center" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
+                         class="w-full h-96 object-cover rounded-lg">
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="relative h-screen" data-aos="fade-up" data-aos-duration="1000">
-        <img src="https://picsum.photos/1920/1080?random=4" alt="Cardamom Cove Landscape"
-            class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent">
-            <div class="container mx-auto px-4 h-full flex flex-col justify-between">
-                <div class="pt-16">
-                    <h2 class="text-white text-4xl font-light leading-tight max-w-2xl">
-                        Architectural masterpiece harmoniously merges with the surrounding landscape
-                    </h2>
-                </div>
-                <div class="pb-8 flex justify-between items-end">
-                    <p class="text-white text-sm">• Embracing Minimalism in Nature</p>
-                    <a href="#" class="text-white text-sm underline">Discover more ›</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-gray-100 py-16" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-12">Experience Tranquility</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden" data-aos="fade-up">
-                    <img src="https://picsum.photos/600/400?random=1" alt="Scenic Views"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Scenic Views</h3>
-                        <p class="text-gray-600">Immerse yourself in breathtaking panoramas of Idukki's lush landscapes.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="400">
-                    <img src="https://picsum.photos/600/400?random=2" alt="Luxurious Comfort"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Luxurious Comfort</h3>
-                        <p class="text-gray-600">Indulge in our elegantly designed rooms that blend modern amenities
-                            with traditional charm.</p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-md overflow-hidden" data-aos="fade-up" data-aos-delay="600">
-                    <img src="https://picsum.photos/600/400?random=3" alt="Culinary Delights"
-                        class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Culinary Delights</h3>
-                        <p class="text-gray-600">Savor authentic Kerala cuisine prepared with locally sourced
-                            ingredients.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-16 text-center">
-                <a href="#book"
-                    class="bg-green-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition duration-300">Book
-                    Your Stay</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-16 bg-white" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
-                    <img src="https://picsum.photos/800/600?random=4" alt="Cardamom Cove Experience"
-                        class="rounded-lg shadow-lg">
-                </div>
-                <div class="md:w-1/2 md:pl-12" data-aos="fade-left" data-aos-delay="400">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Discover the Cardamom Cove Experience</h2>
-                    <p class="text-gray-600 mb-6">Nestled in the heart of Idukki, Cardamom Cove offers a perfect blend
-                        of luxury and nature. Our resort is designed to provide you with an unforgettable escape from
-                        the hustle and bustle of everyday life.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center">
-                            <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Eco-friendly accommodations</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Guided nature walks</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Ayurvedic spa treatments</span>
-                        </li>
+                <div class="text-gray-700" data-aos="fade-left">
+                    <h3 class="font-playfair text-3xl text-luxury-green mb-6">A Sanctuary in Idukki</h3>
+                    <p class="text-lg mb-6">
+                        Located in Kauwanty, Idukki, The Cardamom Cove is a luxury retreat surrounded by the lush greenery of a cardamom estate. Enjoy the cool climate, stunning views of the Western Ghats, and the tranquil waters of the Idukki Reservoir.
+                    </p>
+                    <ul class="space-y-3">
+                        <li>🌿 3 Exclusive Luxury Rooms</li>
+                        <li>🍳 Mini Kitchen in Every Room</li>
+                        <li>🔥 Campfire Under the Stars</li>
+                        <li>🚗 Ample Parking Space</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="dark-section text-white" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container mx-auto px-4 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="flex flex-col justify-between" data-aos="fade-right" data-aos-duration="800">
-                    <div>
-                        <h2 class="text-4xl font-bold mb-4">Cardamom Cove invites you to immerse yourself in the <span
-                                class="text-gray-400">tranquility of the hills</span></h2>
-                        <p class="text-sm mb-8">Our homestay reflects a deep appreciation for the natural beauty of
-                            Kauwanty, creating an atmosphere of peace and rejuvenation.</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-8 mb-8">
-                        <div>
-                            <div
-                                class="border border-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                                <i class="fas fa-mountain"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2">Nature</h3>
-                            <p class="text-sm">Surrounded by the lush greenery of Idukki's hills</p>
+    <!-- Rooms Section -->
+    <section id="rooms" class="py-20 bg-luxury-green">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="font-playfair text-4xl text-center text-luxury-gold mb-16" data-aos="fade-up">Our Luxury Rooms</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                         class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Cardamom Suite</h3>
+                    <p class="text-gray-600">A luxurious suite with a private balcony overlooking the Western Ghats.</p>
+                </div>
+                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1612320648996-2d2142e71d75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80" 
+                         class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Reservoir View Room</h3>
+                    <p class="text-gray-600">Wake up to the serene views of the Idukki Reservoir.</p>
+                </div>
+                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                         class="w-full h-64 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Estate Villa</h3>
+                    <p class="text-gray-600">A private villa surrounded by the lush cardamom estate.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">Contact Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="text-gray-700" data-aos="fade-right">
+                    <h3 class="font-playfair text-3xl text-luxury-green mb-6">Plan Your Stay</h3>
+                    <p class="text-lg mb-6">Reach out to us for bookings or inquiries. We’re here to make your stay unforgettable.</p>
+                    <ul class="space-y-3">
+                        <li>📞 +91 123 456 7890</li>
+                        <li>📧 info@cardamomcove.com</li>
+                        <li>📍 Kauwanty, Idukki, Kerala</li>
+                    </ul>
+                </div>
+                <div class="bg-luxury-green p-8 rounded-lg shadow-lg" data-aos="fade-left">
+                    <form>
+                        <div class="mb-6">
+                            <input type="text" placeholder="Your Name" class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
-                        <div>
-                            <div
-                                class="border border-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                                <i class="fas fa-home"></i>
-                            </div>
-                            <h3 class="text-xl font-semibold mb-2">Comfort</h3>
-                            <p class="text-sm">Modern amenities blended with traditional Kerala hospitality</p>
+                        <div class="mb-6">
+                            <input type="email" placeholder="Your Email" class="w-full p-3 border border-gray-300 rounded-lg">
                         </div>
+                        <div class="mb-6">
+                            <textarea placeholder="Your Message" class="w-full p-3 border border-gray-300 rounded-lg" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="bg-luxury-gold text-luxury-green px-8 py-3 rounded-full text-lg hover:bg-opacity-90 transition-colors">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-luxury-green text-white">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-playfair text-2xl text-luxury-gold mb-4">The Cardamom Cove</h4>
+                    <p class="text-sm text-gray-300">A sanctuary where luxury meets nature.</p>
+                </div>
+                <div>
+                    <h5 class="text-luxury-gold uppercase text-sm mb-4">Quick Links</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#rooms" class="text-gray-300 hover:text-luxury-gold">Rooms</a></li>
+                        <li><a href="#about" class="text-gray-300 hover:text-luxury-gold">About</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-luxury-gold">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-luxury-gold uppercase text-sm mb-4">Contact</h5>
+                    <p class="text-gray-300">📞 +91 123 456 7890</p>
+                    <p class="text-gray-300">📧 info@cardamomcove.com</p>
+                </div>
+                <div>
+                    <h5 class="text-luxury-gold uppercase text-sm mb-4">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-luxury-gold">📘</a>
+                        <a href="#" class="text-gray-300 hover:text-luxury-gold">📸</a>
+                        <a href="#" class="text-gray-300 hover:text-luxury-gold">🐦</a>
                     </div>
-                    <a href="#" class="text-sm underline">Reserve now →</a>
-                </div>
-                <div class="relative" data-aos="fade-left" data-aos-duration="800">
-                    <img src="https://picsum.photos/800/600?random=6" alt="Cardamom Cove"
-                        class="w-full h-full object-cover">
-                    <p class="absolute top-4 right-4 text-xs bg-white bg-opacity-75 text-black py-1 px-2 rounded">
-                        Experience the Magic of Cardamom Cove ●</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="container mx-auto px-4 py-16" data-aos="fade-up" data-aos-duration="1000">
-        <div class="mb-4">
-            <span class="text-sm text-dark font-bold">• Book your stay</span>
-        </div>
-        <div class="flex justify-end items-end">
-            <h2 class="text-dark text-10xl  mb-2">Reach out</h2>
-        </div>
-        <hr class="border-t border-gray-300 mb-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-                <h3 class="text-sm text-gray-500 mb-2">Phone number</h3>
-                <p class="text-dark text-xl">+91 98765 43210</p>
-            </div>
-            <div class="grid grid-cols-1 gap-8">
-                <div>
-                    <h3 class="text-sm text-gray-500 mb-2">Address</h3>
-                    <p class="text-dark">Kauwanty, Idukki,<br>Kerala, India</p>
-                </div>
-                <div>
-                    <h3 class="text-sm text-gray-500 mb-2">Email address</h3>
-                    <p class="text-dark">info@cardamomcove.com</p>
-                </div>
-                <div>
-                    <h3 class="text-sm text-gray-500 mb-2">Instagram</h3>
-                    <p class="text-dark">@cardamom.cove</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="w-full h-80" data-aos="fade-up" data-aos-duration="1000">
-        <img src="https://picsum.photos/1920/1080?random=6" alt="Cardamom Cove landscape"
-            class="w-full h-full object-cover">
-    </section>
-
-    <footer class="text-white py-8 dark-section" data-aos="fade-up" data-aos-duration="1000">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-4 text-xs">
-                <span>© Copyright 2024</span>
-                <div class="w-full bg-white mx-2">
-                    <hr>
-                </div>
-                <span>All rights reserved</span>
-            </div>
-            <nav class="flex justify-between mb-8 text-sm">
-                <a href="#about">About</a>
-                <a href="#accommodation">Rooms</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#experiences">Activities</a>
-                <a href="#amenities">Amenities</a>
-                <a href="#sightseeing">Attractions</a>
-            </nav>
-            <div class="flex justify-center items-center">
-                <h2
-                    class="font-playfair text-8xl sm:text-8xl md:text-8xl lg:text-[12rem] xl:text-[14rem] font-bold leading-none">
-                    Cardamom Cove
-                </h2>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-300">
+                © 2023 The Cardamom Cove. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Add AOS JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-
+    <!-- AOS (Animate On Scroll) JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuContent = document.getElementById('mobile-menu-content');
-        const menuItems = document.querySelectorAll('#mobile-menu a');
-
-        function openMobileMenu() {
-            mobileMenu.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            setTimeout(() => {
-                mobileMenu.classList.add('opacity-100');
-                mobileMenuContent.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-
-        function closeMobileMenu() {
-            mobileMenu.classList.remove('opacity-100');
-            mobileMenuContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                mobileMenu.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-            }, 300);
-        }
-
-        menuToggle.addEventListener('click', () => {
-            if (mobileMenu.classList.contains('hidden')) {
-                openMobileMenu();
-            } else {
-                closeMobileMenu();
-            }
-        });
-
-        menuItems.forEach(item => {
-            item.addEventListener('click', closeMobileMenu);
-        });
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) { // 1024px is the breakpoint for lg in Tailwind
-                closeMobileMenu();
-            }
-        });
-
-        // Initialize AOS
         AOS.init({
             duration: 1000,
             once: true,
-            offset: 100
-        });
-
-        const swiper = new Swiper('.swiper', {
-            loop: true,
-            pagination: {
-                el: '.swiper-pagination',
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
         });
     </script>
-
 </body>
-
 </html>
