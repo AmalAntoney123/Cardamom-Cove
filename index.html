@@ -12,6 +12,32 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Custom Styles -->
     <style>
+        body {
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .bg-luxury-green { background-color: #0a2b24; }
+        .text-luxury-gold { color: #c5a467; }
+        .border-luxury-gold { border-color: #c5a467; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.05); }
+        .hero-overlay { background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8)); }
+        
+        /* Responsive container classes */
+        .container-fluid {
+            width: 100%;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        
+        @media (max-width: 640px) {
+            .text-6xl {
+                font-size: 2.5rem;
+            }
+        }
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-inter { font-family: 'Inter', sans-serif; }
         .bg-luxury-green { background-color: #0a2b24; }
