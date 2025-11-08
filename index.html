@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +8,54 @@
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Google Fonts for Premium Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <!-- AOS (Animate On Scroll) CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
     <!-- Custom Styles -->
     <style>
         body {
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
-        .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-        .bg-luxury-green { background-color: #0a2b24; }
-        .text-luxury-gold { color: #c5a467; }
-        .border-luxury-gold { border-color: #c5a467; }
-        .hover-scale { transition: transform 0.3s ease; }
-        .hover-scale:hover { transform: scale(1.05); }
-        .hero-overlay { background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8)); }
-        
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-luxury-green {
+            background-color: #0a2b24;
+        }
+
+        .text-luxury-gold {
+            color: #c5a467;
+        }
+
+        .border-luxury-gold {
+            border-color: #c5a467;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8));
+        }
+
         /* Responsive container classes */
         .container-fluid {
             width: 100%;
@@ -32,22 +64,47 @@
             margin-right: auto;
             margin-left: auto;
         }
-        
+
         @media (max-width: 640px) {
             .text-6xl {
                 font-size: 2.5rem;
             }
         }
-        .font-playfair { font-family: 'Playfair Display', serif; }
-        .font-inter { font-family: 'Inter', sans-serif; }
-        .bg-luxury-green { background-color: #0a2b24; }
-        .text-luxury-gold { color: #c5a467; }
-        .border-luxury-gold { border-color: #c5a467; }
-        .hover-scale { transition: transform 0.3s ease; }
-        .hover-scale:hover { transform: scale(1.05); }
-        .hero-overlay { background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8)); }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-luxury-green {
+            background-color: #0a2b24;
+        }
+
+        .text-luxury-gold {
+            color: #c5a467;
+        }
+
+        .border-luxury-gold {
+            border-color: #c5a467;
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8));
+        }
     </style>
 </head>
+
 <body class="font-inter bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
@@ -60,7 +117,9 @@
                     <a href="#rooms" class="text-gray-200 hover:text-luxury-gold transition-colors">Rooms</a>
                     <a href="#about" class="text-gray-200 hover:text-luxury-gold transition-colors">About</a>
                     <a href="#contact" class="text-gray-200 hover:text-luxury-gold transition-colors">Contact</a>
-                    <a href="#book" class="text-luxury-gold border border-luxury-gold px-6 py-2 rounded-full hover:bg-luxury-gold hover:text-luxury-green transition-colors">Book Now</a>
+                    <a href="#book"
+                        class="text-luxury-gold border border-luxury-gold px-6 py-2 rounded-full hover:bg-luxury-gold hover:text-luxury-green transition-colors">Book
+                        Now</a>
                 </div>
             </div>
         </div>
@@ -69,18 +128,20 @@
     <!-- Hero Section -->
     <div class="relative h-screen">
         <div class="absolute inset-0 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
-                 class="w-full h-full object-cover" 
-                 alt="Western Ghats View">
+            <img src="assets/images/hero-img.JPG" class="w-full h-full object-cover" alt="Western Ghats View">
             <div class="absolute inset-0 hero-overlay"></div>
         </div>
         <div class="relative h-full flex items-center">
             <div class="max-w-7xl mx-auto px-6 text-center">
                 <h1 class="font-playfair text-6xl text-white mb-6" data-aos="fade-up">Welcome to The Cardamom Cove</h1>
                 <p class="text-xl text-gray-200 mb-8" data-aos="fade-up" data-aos-delay="100">
-                    Nestled in the heart of Kauwanty, Idukki, amidst a lush cardamom estate, our resort offers breathtaking views of the Western Ghats and the serene Idukki Reservoir. Experience luxury in the lap of nature.
+                    Nestled in the heart of Kauwanty, Idukki, amidst a lush cardamom estate, our resort offers
+                    breathtaking views of the Western Ghats and the serene Idukki Reservoir. Experience luxury in the
+                    lap of nature.
                 </p>
-                <button class="bg-transparent border-2 border-luxury-gold text-luxury-gold px-8 py-3 rounded-full text-lg hover:bg-luxury-gold hover:text-luxury-green transition-colors" data-aos="fade-up" data-aos-delay="200">
+                <button
+                    class="bg-transparent border-2 border-luxury-gold text-luxury-gold px-8 py-3 rounded-full text-lg hover:bg-luxury-gold hover:text-luxury-green transition-colors"
+                    data-aos="fade-up" data-aos-delay="200">
                     Explore Villas
                 </button>
             </div>
@@ -90,16 +151,18 @@
     <!-- About Section -->
     <section id="about" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">About The Cardamom Cove</h2>
+            <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">About The Cardamom
+                Cove</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="text-center" data-aos="fade-right">
-                    <img src="https://images.unsplash.com/photo-1604537529428-15bcbeecfe4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" 
-                         class="w-full h-96 object-cover rounded-lg">
+                    <img src="assets/images/rendering-4.png" class="w-full h-96 object-cover rounded-lg">
                 </div>
                 <div class="text-gray-700" data-aos="fade-left">
                     <h3 class="font-playfair text-3xl text-luxury-green mb-6">A Sanctuary in Idukki</h3>
                     <p class="text-lg mb-6">
-                        Located in Kauwanty, Idukki, The Cardamom Cove is a luxury retreat surrounded by the lush greenery of a cardamom estate. Enjoy the cool climate, stunning views of the Western Ghats, and the tranquil waters of the Idukki Reservoir.
+                        Located in Kauwanty, Idukki, The Cardamom Cove is a luxury retreat surrounded by the lush
+                        greenery of a cardamom estate. Enjoy the cool climate, stunning views of the Western Ghats, and
+                        the tranquil waters of the Idukki Reservoir.
                     </p>
                     <ul class="space-y-3">
                         <li>🌿 3 Exclusive Luxury Rooms</li>
@@ -113,31 +176,74 @@
     </section>
 
     <!-- Rooms Section -->
-    <section id="rooms" class="py-20 bg-luxury-green">
+    <section id="resort-gallery" class="py-20 bg-luxury-green">
         <div class="max-w-7xl mx-auto px-6">
-            <h2 class="font-playfair text-4xl text-center text-luxury-gold mb-16" data-aos="fade-up">Our Luxury Rooms</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         class="w-full h-64 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Cardamom Suite</h3>
-                    <p class="text-gray-600">A luxurious suite with a private balcony overlooking the Western Ghats.</p>
-                </div>
-                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1612320648996-2d2142e71d75?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80" 
-                         class="w-full h-64 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Reservoir View Room</h3>
-                    <p class="text-gray-600">Wake up to the serene views of the Idukki Reservoir.</p>
-                </div>
-                <div class="text-center bg-white p-6 rounded-lg hover-scale" data-aos="fade-up" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                         class="w-full h-64 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold text-luxury-green mb-2">Estate Villa</h3>
-                    <p class="text-gray-600">A private villa surrounded by the lush cardamom estate.</p>
-                </div>
+            <h2 class="font-playfair text-4xl text-center text-luxury-gold mb-16" data-aos="fade-up">
+                Explore Our Resort
+            </h2>
+
+            <div class="grid gap-4 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 auto-rows-[250px] items-stretch">
+
+                <!-- Image 1: Tall item (example: staircase) -->
+                <a href="assets/images/IMG-20250908-WA0039.jpg" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 row-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="100">
+                    <img src="assets/images/IMG-20250908-WA0039.jpg"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+                <!-- Image 2: Standard item (example: building exterior) -->
+                <a href="assets/images/IMG-20250908-WA0044.jpg" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="200">
+                    <img src="assets/images/IMG-20250908-WA0044.jpg"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+                <!-- Image 3: Standard item (example: roofline) -->
+                <a href="assets/images/IMG-20250908-WA0073.jpg" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="300">
+                    <img src="assets/images/IMG-20250908-WA0073.jpg"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+                <!-- Image 4: Tall item (example: interior pillar) -->
+                <a href="assets/images/IMG-20250908-WA0081.jpg" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 row-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="400">
+                    <img src="assets/images/IMG-20250908-WA0081.jpg"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+                <!-- Image 5: Wide item (example: view from below) -->
+                <a href="assets/images/IMG-20250908-WA0083.jpg" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="500">
+                    <img src="assets/images/IMG-20250908-WA0083.jpg"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+                <!-- Image 6: Standard item (example: tent/view) -->
+                <a href="assets/images/hero-img.JPG" data-lightbox="resort"
+                    class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
+                    data-aos-delay="600">
+                    <img src="assets/images/hero-img.JPG"
+                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                </a>
+
+            </div>
+            <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="700">
+                <button
+                    class="bg-transparent border-2 border-luxury-gold text-luxury-gold px-8 py-3 rounded-full text-lg hover:bg-luxury-gold hover:text-luxury-green transition-colors">
+                    Load More Images
+                </button>
             </div>
         </div>
     </section>
+
+
+
 
     <!-- Contact Section -->
     <section id="contact" class="py-20 bg-white">
@@ -146,27 +252,32 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div class="text-gray-700" data-aos="fade-right">
                     <h3 class="font-playfair text-3xl text-luxury-green mb-6">Plan Your Stay</h3>
-                    <p class="text-lg mb-6">Reach out to us for bookings or inquiries. We’re here to make your stay unforgettable.</p>
+                    <p class="text-lg mb-6">Reach out to us for bookings or inquiries. We’re here to make your stay
+                        unforgettable.</p>
                     <ul class="space-y-3">
-                        <li>📞 +91 123 456 7890</li>
-                        <li>📧 info@cardamomcove.com</li>
+                        <li>📞 +91 8606 677 859</li>
+                        <li>📧 info@cardamomcove.in</li>
                         <li>📍 Kauwanty, Idukki, Kerala</li>
                     </ul>
                 </div>
                 <div class="bg-luxury-green p-8 rounded-lg shadow-lg" data-aos="fade-left">
                     <form action="https://formsubmit.co/b0c43b479fbe9006239c792ed6c03149" method="POST" />
-                        <div class="mb-6">
-                            <input type="text" placeholder="Your Name" name="name" class="w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div class="mb-6">
-                            <input type="email" placeholder="Your Email" name="email" class="w-full p-3 border border-gray-300 rounded-lg">
-                        </div>
-                        <div class="mb-6">
-                            <textarea placeholder="Your Message" name="message" class="w-full p-3 border border-gray-300 rounded-lg" rows="5"></textarea>
-                        </div>
-                        <button type="submit" class="bg-luxury-gold text-luxury-green text-white px-8 py-3 rounded-full text-lg hover:bg-opacity-90 transition-colors">
-                            Send Message
-                        </button>
+                    <div class="mb-6">
+                        <input type="text" placeholder="Your Name" name="name"
+                            class="w-full p-3 border border-gray-300 rounded-lg">
+                    </div>
+                    <div class="mb-6">
+                        <input type="email" placeholder="Your Email" name="email"
+                            class="w-full p-3 border border-gray-300 rounded-lg">
+                    </div>
+                    <div class="mb-6">
+                        <textarea placeholder="Your Message" name="message"
+                            class="w-full p-3 border border-gray-300 rounded-lg" rows="5"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="bg-luxury-gold text-luxury-green text-white px-8 py-3 rounded-full text-lg hover:bg-opacity-90 transition-colors">
+                        Send Message
+                    </button>
                     </form>
                 </div>
             </div>
@@ -191,8 +302,8 @@
                 </div>
                 <div>
                     <h5 class="text-luxury-gold uppercase text-sm mb-4">Contact</h5>
-                    <p class="text-gray-300">📞 +91 123 456 7890</p>
-                    <p class="text-gray-300">📧 info@cardamomcove.com</p>
+                    <p class="text-gray-300">📞 +91 8606 677 859</p>
+                    <p class="text-gray-300">📧 info@cardamomcove.in</p>
                 </div>
                 <div>
                     <h5 class="text-luxury-gold uppercase text-sm mb-4">Follow Us</h5>
@@ -218,4 +329,5 @@
         });
     </script>
 </body>
+
 </html>
