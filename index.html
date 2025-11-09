@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Cardamom Cove - Luxury Resort in Idukki</title>
-    <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Google Fonts for Premium Typography -->
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap"
         rel="stylesheet">
-    <!-- AOS (Animate On Scroll) CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
-    <!-- Custom Styles -->
     <style>
         body {
             overflow-x: hidden;
@@ -106,7 +106,6 @@
 </head>
 
 <body class="font-inter bg-gray-50">
-    <!-- Navigation -->
     <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center py-4">
@@ -125,7 +124,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <div class="relative h-screen">
         <div class="absolute inset-0 overflow-hidden">
             <img src="assets/images/hero-img.JPG" class="w-full h-full object-cover" alt="Western Ghats View">
@@ -148,7 +146,6 @@
         </div>
     </div>
 
-    <!-- About Section -->
     <section id="about" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">About The Cardamom
@@ -164,18 +161,18 @@
                         greenery of a cardamom estate. Enjoy the cool climate, stunning views of the Western Ghats, and
                         the tranquil waters of the Idukki Reservoir.
                     </p>
-                    <ul class="space-y-3">
-                        <li>🌿 3 Exclusive Luxury Rooms</li>
-                        <li>🍳 Mini Kitchen in Every Room</li>
-                        <li>🔥 Campfire Under the Stars</li>
-                        <li>🚗 Ample Parking Space</li>
+                    <ul class="space-y-3 text-lg">
+                        <li><i class="fa-solid fa-leaf text-luxury-green fa-fw mr-2"></i> 3 Exclusive Luxury Rooms</li>
+                        <li><i class="fa-solid fa-utensils text-luxury-green fa-fw mr-2"></i> Mini Kitchen in Every Room
+                        </li>
+                        <li><i class="fa-solid fa-fire text-luxury-green fa-fw mr-2"></i> Campfire Under the Stars</li>
+                        <li><i class="fa-solid fa-car text-luxury-green fa-fw mr-2"></i> Ample Parking Space</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Rooms Section -->
     <section id="resort-gallery" class="py-20 bg-luxury-green">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="font-playfair text-4xl text-center text-luxury-gold mb-16" data-aos="fade-up">
@@ -184,7 +181,6 @@
 
             <div class="grid gap-4 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 auto-rows-[250px] items-stretch">
 
-                <!-- Image 1: Tall item (example: staircase) -->
                 <a href="assets/images/IMG-20250908-WA0039.jpg" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 row-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="100">
@@ -192,7 +188,6 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </a>
 
-                <!-- Image 2: Standard item (example: building exterior) -->
                 <a href="assets/images/IMG-20250908-WA0044.jpg" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="200">
@@ -200,7 +195,6 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </a>
 
-                <!-- Image 3: Standard item (example: roofline) -->
                 <a href="assets/images/IMG-20250908-WA0073.jpg" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="300">
@@ -208,7 +202,6 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </a>
 
-                <!-- Image 4: Tall item (example: interior pillar) -->
                 <a href="assets/images/IMG-20250908-WA0081.jpg" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 row-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="400">
@@ -216,7 +209,6 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </a>
 
-                <!-- Image 5: Wide item (example: view from below) -->
                 <a href="assets/images/IMG-20250908-WA0083.jpg" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="500">
@@ -224,7 +216,6 @@
                         class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </a>
 
-                <!-- Image 6: Standard item (example: tent/view) -->
                 <a href="assets/images/hero-img.JPG" data-lightbox="resort"
                     class="overflow-hidden rounded-lg shadow-lg col-span-2 md:col-span-2" data-aos="zoom-in"
                     data-aos-delay="600">
@@ -245,7 +236,6 @@
 
 
 
-    <!-- Contact Section -->
     <section id="contact" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-6">
             <h2 class="font-playfair text-4xl text-center text-luxury-green mb-16" data-aos="fade-up">Contact Us</h2>
@@ -254,10 +244,12 @@
                     <h3 class="font-playfair text-3xl text-luxury-green mb-6">Plan Your Stay</h3>
                     <p class="text-lg mb-6">Reach out to us for bookings or inquiries. We’re here to make your stay
                         unforgettable.</p>
-                    <ul class="space-y-3">
-                        <li>📞 +91 8606 677 859</li>
-                        <li>📧 info@thecardamomcove.in</li>
-                        <li>📍 Kauwanty, Idukki, Kerala</li>
+                    <ul class="space-y-3 text-lg">
+                        <li><i class="fa-solid fa-phone text-luxury-green fa-fw mr-2"></i> +91 8606 677 859</li>
+                        <li><i class="fa-solid fa-envelope text-luxury-green fa-fw mr-2"></i> info@thecardamomcove.in
+                        </li>
+                        <li><i class="fa-solid fa-location-dot text-luxury-green fa-fw mr-2"></i> Kauwanty, Idukki,
+                            Kerala</li>
                     </ul>
                 </div>
                 <div class="bg-luxury-green p-8 rounded-lg shadow-lg" data-aos="fade-left">
@@ -284,7 +276,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-luxury-green text-white">
         <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -302,15 +293,18 @@
                 </div>
                 <div>
                     <h5 class="text-luxury-gold uppercase text-sm mb-4">Contact</h5>
-                    <p class="text-gray-300">📞 +91 8606 677 859</p>
-                    <p class="text-gray-300">📧 info@thecardamomcove.in</p>
+                    <p class="text-gray-300"><i class="fa-solid fa-phone fa-fw mr-2"></i> +91 8606 677 859</p>
+                    <p class="text-gray-300"><i class="fa-solid fa-envelope fa-fw mr-2"></i> info@thecardamomcove.in</p>
                 </div>
                 <div>
                     <h5 class="text-luxury-gold uppercase text-sm mb-4">Follow Us</h5>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-luxury-gold">📘</a>
-                        <a href="#" class="text-gray-300 hover:text-luxury-gold">📸</a>
-                        <a href="#" class="text-gray-300 hover:text-luxury-gold">🐦</a>
+                        <a href="https://www.instagram.com/thecardamomcove/" class="text-gray-300 hover:text-luxury-gold"><i
+                                class="fa-brands fa-facebook fa-lg"></i></a>
+                        <a href="https://www.instagram.com/thecardamomcove/" class="text-gray-300 hover:text-luxury-gold"><i
+                                class="fa-brands fa-instagram fa-lg"></i></a>
+                        <a href="https://www.instagram.com/thecardamomcove/" class="text-gray-300 hover:text-luxury-gold"><i
+                                class="fa-brands fa-x-twitter fa-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -320,7 +314,6 @@
         </div>
     </footer>
 
-    <!-- AOS (Animate On Scroll) JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
