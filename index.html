@@ -108,28 +108,31 @@
 <body class="font-inter bg-gray-50">
     <body class="font-inter bg-gray-50">
     
-    <!-- Under Construction Modal -->
+    <!-- Under Construction Bottom Sheet -->
 <div id="construction-modal"
-     class="fixed inset-0 bg-black bg-opacity-60 flex flex-col
-            justify-end sm:justify-center items-stretch sm:items-center
-            px-0 sm:px-4 pb-4 sm:pb-0 z-50">
+     class="fixed inset-0 bg-black bg-opacity-60
+            flex flex-col justify-end sm:justify-center
+            items-stretch sm:items-center
+            overflow-hidden z-50">
 
-  <div class="bg-white w-full sm:w-auto max-w-md
-              rounded-t-3xl sm:rounded-2xl
-              shadow-2xl border border-luxury-gold
-              p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+  <div
+    class="w-full max-w-full sm:max-w-md
+           bg-white rounded-t-3xl sm:rounded-2xl
+           shadow-2xl border border-luxury-gold
+           px-5 pt-5 pb-7 sm:p-8
+           max-h-[85vh] overflow-y-auto mx-auto">
 
       <p class="uppercase tracking-widest text-xs text-gray-500 mb-3 text-center">
           Opening Soon
       </p>
-      <h2 class="font-playfair text-3xl md:text-4xl text-luxury-green mb-4 text-center">
+      <h2 class="font-playfair text-2xl sm:text-3xl text-luxury-green mb-4 text-center">
           The Cardamom Cove
       </h2>
-      <p class="text-gray-700 mb-4 text-center">
-          Our luxury resort is currently under construction and will be
+      <p class="text-gray-700 text-sm sm:text-base mb-4 text-center">
+          Our resort is currently under construction and will be
           welcoming guests soon in Kauwanty, Idukki.
       </p>
-      <p class="text-sm text-gray-500 mb-6 text-center">
+      <p class="text-xs sm:text-sm text-gray-500 mb-6 text-center">
           In the meantime, feel free to explore the website and discover what awaits you.
       </p>
       <div class="flex justify-center">
@@ -144,7 +147,7 @@
       </div>
   </div>
 </div>
-<!-- End Under Construction Modal -->
+<!-- End Under Construction Bottom Sheet -->
         
     <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-6">
@@ -363,24 +366,21 @@
     </script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-        });
+  AOS.init({
+      duration: 1000,
+      once: true,
+  });
 
-        // Lock scroll when page loads (modal visible)
-        document.addEventListener('DOMContentLoaded', function () {
-            document.body.style.overflow = 'hidden';
-        });
+  document.addEventListener('DOMContentLoaded', function () {
+      // lock only vertical scroll; horizontal is already hidden via CSS
+      document.body.style.overflowY = 'hidden';
+  });
 
-        // Close modal and unlock scroll
-        function closeConstructionModal() {
-            var modal = document.getElementById('construction-modal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
-            document.body.style.overflow = '';
-        }
+  function closeConstructionModal() {
+      var modal = document.getElementById('construction-modal');
+      if (modal) modal.style.display = 'none';
+      document.body.style.overflowY = '';
+  }
     </script>
 </body>
 </html>
