@@ -21,7 +21,6 @@
     <style>
         body {
             overflow-x: hidden;
-            /* Prevent horizontal scroll */
         }
 
         .font-playfair {
@@ -70,42 +69,34 @@
                 font-size: 2.5rem;
             }
         }
-
-        .font-playfair {
-            font-family: 'Playfair Display', serif;
-        }
-
-        .font-inter {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .bg-luxury-green {
-            background-color: #0a2b24;
-        }
-
-        .text-luxury-gold {
-            color: #c5a467;
-        }
-
-        .border-luxury-gold {
-            border-color: #c5a467;
-        }
-
-        .hover-scale {
-            transition: transform 0.3s ease;
-        }
-
-        .hover-scale:hover {
-            transform: scale(1.05);
-        }
-
-        .hero-overlay {
-            background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8));
-        }
     </style>
 </head>
 
 <body class="font-inter bg-gray-50">
+
+    <div id="constructionModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm transition-opacity duration-500">
+        <div class="bg-luxury-green border-2 border-luxury-gold p-8 md:p-12 rounded-lg max-w-lg mx-4 text-center shadow-2xl relative" data-aos="zoom-in">
+            <div class="mb-6">
+                <i class="fa-solid fa-key text-luxury-gold text-4xl"></i>
+            </div>
+            
+            <h2 class="font-playfair text-3xl md:text-4xl text-white mb-4">
+                Opening Soon
+            </h2>
+            
+            <div class="w-16 h-1 bg-luxury-gold mx-auto mb-6"></div>
+
+            <p class="font-inter text-gray-300 text-lg mb-8 leading-relaxed">
+                We are currently putting the finishing touches on your sanctuary in Idukki. <br><br>
+                The resort is under construction, but we invite you to explore our website to see the vision of what awaits you.
+            </p>
+
+            <button onclick="closeModal()" 
+                class="bg-luxury-gold text-luxury-green font-bold px-8 py-3 rounded-full text-lg hover:bg-white hover:text-luxury-green transition-all duration-300 shadow-lg transform hover:-translate-y-1">
+                Explore The Vision
+            </button>
+        </div>
+    </div>
     <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center py-4">
@@ -320,6 +311,15 @@
             duration: 1000,
             once: true,
         });
+
+        // Function to close the modal
+        function closeModal() {
+            const modal = document.getElementById('constructionModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500); // Wait for transition to finish
+        }
     </script>
 </body>
 
