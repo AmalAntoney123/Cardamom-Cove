@@ -108,31 +108,34 @@
 <body class="font-inter bg-gray-50">
     <body class="font-inter bg-gray-50">
     <!-- Under Construction Modal -->
-    <div id="construction-modal"
-        class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center px-4"
-        style="z-index: 9999;">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border border-luxury-gold">
-            <p class="uppercase tracking-widest text-xs text-gray-500 mb-3">
-                Opening Soon
-            </p>
-            <h2 class="font-playfair text-3xl md:text-4xl text-luxury-green mb-4">
-                The Cardamom Cove
-            </h2>
-            <p class="text-gray-700 mb-4">
-                Our luxury resort is currently under construction and will be welcoming guests soon in
-                Kauwanty, Idukki.
-            </p>
-            <p class="text-sm text-gray-500 mb-6">
-                In the meantime, feel free to explore the website and discover what awaits you.
-            </p>
-            <button
-                onclick="closeConstructionModal()"
-                class="inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-medium border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-green transition-colors duration-200">
-                Explore Website
-            </button>
-        </div>
-    </div>
-    <!-- End Under Construction Modal -->
+<div id="construction-modal"
+     class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start sm:items-center px-4 py-8 sm:py-0"
+     style="z-index: 9999;">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8
+              border border-luxury-gold max-h-[90vh] overflow-y-auto">
+      <p class="uppercase tracking-widest text-xs text-gray-500 mb-3">
+          Opening Soon
+      </p>
+      <h2 class="font-playfair text-3xl md:text-4xl text-luxury-green mb-4">
+          The Cardamom Cove
+      </h2>
+      <p class="text-gray-700 mb-4">
+          Our luxury resort is currently under construction and will be
+          welcoming guests soon in Kauwanty, Idukki.
+      </p>
+      <p class="text-sm text-gray-500 mb-6">
+          In the meantime, feel free to explore the website and discover what awaits you.
+      </p>
+      <button
+          onclick="closeConstructionModal()"
+          class="inline-flex items-center justify-center px-8 py-3 rounded-full text-sm font-medium
+                 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-green
+                 transition-colors duration-200">
+          Explore Website
+      </button>
+  </div>
+</div>
+<!-- End Under Construction Modal -->
     
     <nav class="bg-luxury-green shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-6">
