@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Cardamom Cove - Luxury Resort in Idukki</title>
+    <title>The Cardamom Cove - A sanctuary where luxury meets nature</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;700&display=swap"
@@ -19,7 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
     <style>
-        body {
+        html, body {
             overflow-x: hidden;
             /* Prevent horizontal scroll */
         }
@@ -42,6 +42,23 @@
 
         .border-luxury-gold {
             border-color: #c5a467;
+        }
+
+        /* NEW: define gold background utility used on buttons */
+        .bg-luxury-gold {
+            background-color: #c5a467;
+        }
+
+        /* subtle hover visual for the gold button (works without Tailwind JIT) */
+        .bg-luxury-gold:hover {
+            filter: brightness(0.96);
+        }
+
+        /* custom focus ring that mimics Tailwind ring utilities for our gold */
+        .focus-ring-luxury-gold:focus {
+            outline: none;
+            box-shadow: 0 0 0 6px rgba(197, 164, 103, 0.15);
+            border-radius: 9999px; /* keep same rounded-full shape */
         }
 
         .hover-scale {
@@ -101,6 +118,22 @@
 
         .hero-overlay {
             background: linear-gradient(to bottom, rgba(10, 43, 36, 0.6), rgba(10, 43, 36, 0.8));
+        }
+
+        .icon-circle {
+            width: 88px;
+            height: 88px;
+            border-radius: 9999px;
+            background: rgba(197, 164, 103, 0.12); /* subtle gold halo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        .modal-icon {
+            font-size: 2.25rem; /* large icon */
+            color: #c5a467; /* luxury gold */
+            line-height: 1;
         }
     </style>
 </head>
@@ -313,6 +346,59 @@
             </div>
         </div>
     </footer>
+
+    <!-- Construction modal (shows on load) -->
+    <div id="constructionModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-4">
+        <div role="dialog" aria-modal="true" aria-labelledby="constructionTitle"
+            class="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 text-center shadow-lg">
+            <!-- Large decorative icon -->
+            <div class="icon-circle" aria-hidden="true">
+                <i class="fa-solid fa-tools modal-icon"></i>
+            </div>
+
+            <h2 id="constructionTitle" class="font-playfair text-2xl text-luxury-gold mb-3">We're Under Construction</h2>
+            <p class="text-gray-700 mb-6">
+                The resort is being prepared and will open soon. Meanwhile you can still explore the website.
+            </p>
+            <button id="exploreBtn"
+                class="bg-luxury-gold text-white px-6 py-2 rounded-full hover:opacity-90 focus-ring-luxury-gold">
+                Explore Website
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Keep page from scrolling while modal is open, allow close via button, overlay or Esc
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('constructionModal');
+            var exploreBtn = document.getElementById('exploreBtn');
+
+            // Prevent background scroll while modal is visible
+            document.body.style.overflow = 'hidden';
+
+            // Focus the button for accessibility
+            exploreBtn.focus();
+
+            function closeModal() {
+                if (!modal) return;
+                // remove modal from DOM to avoid layout issues on small screens
+                modal.remove();
+                document.body.style.overflow = '';
+            }
+
+            exploreBtn.addEventListener('click', closeModal);
+
+            // Close when clicking the backdrop (but not when clicking the modal content)
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeModal();
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeModal();
+            });
+        });
+    </script>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
