@@ -8,6 +8,8 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  const isHomePage = location.pathname === '/';
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -15,6 +17,8 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isScrolledOrNotHome = scrolled || !isHomePage;
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -35,16 +39,15 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav 
-      className={`fixed w-full z-50 transition-all duration-500 ${
-        scrolled ? 'bg-[#faf9f6] shadow-sm py-3' : 'bg-transparent py-6'
-      }`}
+    <nav
+      className={`fixed w-full z-50 transition-all duration-500 ${isScrolledOrNotHome ? 'bg-[#faf9f6]/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <Palmtree className={`w-8 h-8 ${scrolled ? 'text-[#1a2e25]' : 'text-white'}`} />
-            <span className={`text-2xl font-serif tracking-widest ${scrolled ? 'text-[#1a2e25]' : 'text-white'}`}>
+            <Palmtree className={`w-8 h-8 ${isScrolledOrNotHome ? 'text-[#1a2e25]' : 'text-white'}`} />
+            <span className={`text-2xl font-serif tracking-widest ${isScrolledOrNotHome ? 'text-[#1a2e25]' : 'text-white'}`}>
               CARDAMOM COVE
             </span>
           </Link>
@@ -60,11 +63,10 @@ const Navbar: React.FC = () => {
                     e.preventDefault();
                     handleNavClick(link.path);
                   }}
-                  className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 cursor-pointer ${
-                    scrolled 
-                      ? 'text-[#1a2e25] hover:text-[#c5a059]' 
+                  className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 cursor-pointer ${isScrolledOrNotHome
+                      ? 'text-[#1a2e25] hover:text-[#c5a059]'
                       : 'text-white hover:text-[#c5a059]'
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </a>
@@ -72,21 +74,19 @@ const Navbar: React.FC = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 ${
-                    scrolled 
-                      ? 'text-[#1a2e25] hover:text-[#c5a059]' 
+                  className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 ${isScrolledOrNotHome
+                      ? 'text-[#1a2e25] hover:text-[#c5a059]'
                       : 'text-white hover:text-[#c5a059]'
-                  } ${location.pathname === link.path ? 'border-b border-[#c5a059]' : ''}`}
+                    } ${location.pathname === link.path ? 'border-b border-[#c5a059]' : ''}`}
                 >
                   {link.name}
                 </Link>
               )
             ))}
-            <button className={`px-6 py-2 rounded-sm transition-all duration-300 uppercase tracking-widest text-[10px] font-bold border ${
-              scrolled 
-                ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]' 
+            <button className={`px-6 py-2 rounded-sm transition-all duration-300 uppercase tracking-widest text-[10px] font-bold border ${isScrolledOrNotHome
+                ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]'
                 : 'bg-transparent text-white border-white hover:bg-white hover:text-[#1a2e25]'
-            }`}>
+              }`}>
               Reserve
             </button>
           </div>
@@ -95,7 +95,7 @@ const Navbar: React.FC = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 rounded-md ${scrolled ? 'text-[#1a2e25]' : 'text-white'}`}
+              className={`p-2 rounded-md ${isScrolledOrNotHome ? 'text-[#1a2e25]' : 'text-white'}`}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -104,9 +104,8 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`md:hidden absolute w-full bg-[#faf9f6] transition-all duration-300 shadow-xl border-t border-stone-100 ${
-        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-      }`}>
+      <div className={`md:hidden absolute w-full bg-[#faf9f6] transition-all duration-300 shadow-xl border-t border-stone-100 ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        }`}>
         <div className="px-4 pt-2 pb-6 space-y-1">
           {navLinks.map((link) => (
             <Link
