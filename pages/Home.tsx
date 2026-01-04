@@ -2,10 +2,8 @@
 import React from 'react';
 import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useReveal } from '../hooks/useReveal';
 
 const Home: React.FC = () => {
-  const { addToReveal } = useReveal();
 
   const rooms = [
     {
@@ -74,30 +72,30 @@ const Home: React.FC = () => {
       <section className="py-32 bg-[#faf9f6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-            <div className="relative reveal-left" ref={addToReveal}>
+            <div className="relative reveal-left">
               <img
                 src="/images/sanctuary-img.jpg"
                 alt="Idukki Landscape"
                 className="w-full h-[650px] object-cover rounded-sm shadow-2xl relative z-10"
               />
-              <div className="absolute -bottom-10 -right-10 bg-[#1a2e25] text-white p-12 hidden lg:block max-w-sm z-20 shadow-2xl reveal-scale delay-300" ref={addToReveal}>
+              <div className="absolute -bottom-10 -right-10 bg-[#1a2e25] text-white p-12 hidden lg:block max-w-sm z-20 shadow-2xl reveal-scale delay-300">
                 <h3 className="font-serif text-3xl mb-4 text-[#c5a059]">A Sanctuary in Idukki</h3>
                 <p className="font-light text-stone-300 text-sm leading-relaxed">Located in Kauwanty, surrounded by the lush greenery of a cardamom estate with stunning views of the Western Ghats and Idukki Reservoir.</p>
               </div>
             </div>
-            <div className="space-y-10 reveal" ref={addToReveal}>
+            <div className="space-y-10 reveal">
               <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">Architecture & Nature</span>
               <h2 className="text-4xl md:text-6xl font-serif leading-tight text-[#1a2e25]">Elegance Rooted in the Soil</h2>
               <p className="text-stone-600 text-lg leading-relaxed font-light">
                 At The Cardamom Cove, we offer a unique retreat where the cool highland climate meets unparalleled hospitality. Every corner is designed to honor the tranquil waters and emerald forests that surround us.
               </p>
               <div className="grid grid-cols-2 gap-10 pt-6">
-                <div className="flex flex-col space-y-4 reveal delay-100" ref={addToReveal}>
+                <div className="flex flex-col space-y-4 reveal delay-100">
                   <Trees className="w-10 h-10 text-[#2d4a3e] stroke-1" />
                   <h4 className="font-serif text-2xl text-[#1a2e25]">Cardamom Estate</h4>
                   <p className="text-sm text-stone-500 font-light">Live inside a working aromatic plantation.</p>
                 </div>
-                <div className="flex flex-col space-y-4 reveal delay-200" ref={addToReveal}>
+                <div className="flex flex-col space-y-4 reveal delay-200">
                   <Heart className="w-10 h-10 text-[#2d4a3e] stroke-1" />
                   <h4 className="font-serif text-2xl text-[#1a2e25]">Breathtaking Views</h4>
                   <p className="text-sm text-stone-500 font-light">Western Ghats and Idukki Reservoir vistas.</p>
@@ -121,7 +119,7 @@ const Home: React.FC = () => {
       {/* Luxury Rooms Grid */}
       <section id="rooms" className="py-32 bg-[#f2f1ec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20 space-y-4 reveal" ref={addToReveal}>
+          <div className="text-center mb-20 space-y-4 reveal">
             <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">The Sanctuaries</span>
             <h2 className="text-4xl md:text-6xl font-serif text-[#1a2e25]">Private Living</h2>
           </div>
@@ -131,7 +129,7 @@ const Home: React.FC = () => {
               <div
                 key={idx}
                 className={`bg-white group overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-700 reveal`}
-                ref={addToReveal}
+
                 style={{ transitionDelay: `${idx * 200}ms` }}
               >
                 <div className="h-96 overflow-hidden relative">
@@ -168,7 +166,7 @@ const Home: React.FC = () => {
               { Icon: Car, title: "Ample Parking", sub: "Safe & Spacious" },
               { Icon: Wind, title: "Highland Air", sub: "Western Ghats" }
             ].map((item, i) => (
-              <div key={i} className="space-y-6 reveal-scale" ref={addToReveal} style={{ transitionDelay: `${i * 150}ms` }}>
+              <div key={i} className="space-y-6 reveal-scale" style={{ transitionDelay: `${i * 150}ms` }}>
                 <item.Icon className="w-12 h-12 mx-auto text-[#c5a059] stroke-1" />
                 <h5 className="font-serif text-2xl">{item.title}</h5>
                 <p className="text-stone-500 text-[10px] uppercase tracking-[0.3em]">{item.sub}</p>
@@ -182,7 +180,7 @@ const Home: React.FC = () => {
       <section id="contact" className="py-32 bg-[#faf9f6]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-            <div className="reveal-left" ref={addToReveal}>
+            <div className="reveal-left">
               <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">Connect With Us</span>
               <h2 className="text-4xl md:text-6xl font-serif text-[#1a2e25] mt-4 mb-8">Plan Your Stay</h2>
               <p className="text-stone-600 font-light mb-12">Reach out to us for bookings or inquiries. We’re here to make your stay in Idukki unforgettable.</p>
@@ -218,7 +216,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white p-12 shadow-2xl reveal-right" ref={addToReveal}>
+            <div className="bg-white p-12 shadow-2xl reveal-right">
               <form action="https://formsubmit.co/b0c43b479fbe9006239c792ed6c03149" method="POST" className="space-y-8">
                 <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
                   <input type="text" name="name" placeholder="YOUR NAME" required className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
@@ -239,7 +237,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Map Section */}
-      <section className="h-[500px] w-full bg-stone-200 relative reveal" ref={addToReveal}>
+      <section className="h-[500px] w-full bg-stone-200 relative reveal">
         <div className="absolute inset-0 grayscale opacity-70">
           <iframe
             src="https://www.google.com/maps?q=9.8071547,77.0399898&z=17&output=embed"

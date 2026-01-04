@@ -2,13 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { GalleryImage } from '../types';
 import { Maximize2, X, Sparkles, Leaf } from 'lucide-react';
-import { useReveal } from '../hooks/useReveal';
 
 const Gallery: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'exterior' | 'interior' | 'dining' | 'nature'>('all');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
-  const { addToReveal } = useReveal();
 
 
   useEffect(() => {
@@ -55,7 +53,7 @@ const Gallery: React.FC = () => {
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-50 rounded-full blur-[120px] -z-10 opacity-40"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center space-y-6 mb-20 reveal" ref={addToReveal}>
+        <div className="text-center space-y-6 mb-20 reveal">
           <div className="flex justify-center mb-4">
             <Leaf className="text-emerald-800/20 w-12 h-12" />
           </div>
@@ -68,7 +66,7 @@ const Gallery: React.FC = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16 reveal" ref={addToReveal}>
+        <div className="flex flex-wrap justify-center gap-4 mb-16 reveal">
           {filterButtons.map((btn) => (
             <button
               key={btn.value}
@@ -91,7 +89,7 @@ const Gallery: React.FC = () => {
             <div
               key={img.id}
               className="relative group cursor-pointer overflow-hidden rounded-sm break-inside-avoid shadow-lg reveal-scale border border-stone-100"
-              ref={addToReveal}
+
               onClick={() => setSelectedImage(img.url)}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 to-transparent z-0"></div>

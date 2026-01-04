@@ -6,8 +6,11 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import Admin from './pages/Admin';
+import { useReveal } from './hooks/useReveal';
 
 const App: React.FC = () => {
+  useReveal();
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen selection:bg-emerald-900 selection:text-white">
