@@ -25,8 +25,13 @@ const Admin: React.FC = () => {
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'title'>('newest');
 
-  // Edit State
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+
   const [editForm, setEditForm] = useState({
     url: '',
     title: '',
@@ -38,6 +43,7 @@ const Admin: React.FC = () => {
     if (token) setIsLoggedIn(true);
 
     const fetchCustomImages = async () => {
+      setIsFetching(true);
       try {
         const response = await fetch('/api/images');
         if (response.ok) {
@@ -46,6 +52,8 @@ const Admin: React.FC = () => {
         }
       } catch (error) {
         console.error('Error fetching images:', error);
+      } finally {
+        setIsFetching(false);
       }
     };
 
@@ -54,6 +62,8 @@ const Admin: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoggingIn(true);
+    setError('');
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -65,12 +75,13 @@ const Admin: React.FC = () => {
         const { token } = await response.json();
         localStorage.setItem('admin_token', token);
         setIsLoggedIn(true);
-        setError('');
       } else {
         setError('Invalid credentials for the curator portal.');
       }
     } catch (err) {
       setError('Connection error. Please try again.');
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -82,6 +93,7 @@ const Admin: React.FC = () => {
   const handleAddImage = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('admin_token');
+    setIsAdding(true);
 
     try {
       let body;
@@ -119,11 +131,14 @@ const Admin: React.FC = () => {
       }
     } catch (err) {
       console.error('Error adding image:', err);
+    } finally {
+      setIsAdding(false);
     }
   };
 
   const handleUpdate = async (id: string) => {
     const token = localStorage.getItem('admin_token');
+    setIsUpdating(true);
     try {
       const response = await fetch(`/api/images/${id}`, {
         method: 'PATCH',
@@ -143,6 +158,8 @@ const Admin: React.FC = () => {
       }
     } catch (err) {
       console.error('Error updating image:', err);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -150,6 +167,7 @@ const Admin: React.FC = () => {
     if (!window.confirm('Are you sure you want to remove this from the archive?')) return;
 
     const token = localStorage.getItem('admin_token');
+    setDeletingId(id);
     try {
       const response = await fetch(`/api/images/${id}`, {
         method: 'DELETE',
@@ -161,6 +179,8 @@ const Admin: React.FC = () => {
       }
     } catch (err) {
       console.error('Error deleting image:', err);
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -226,8 +246,18 @@ const Admin: React.FC = () => {
               />
             </div>
             {error && <p className="text-red-800 text-[10px] uppercase tracking-wider text-center">{error}</p>}
-            <button className="w-full bg-[#1a2e25] text-white py-4 font-bold tracking-[0.3em] text-xs uppercase hover:bg-[#c5a059] transition-all">
-              Authorize
+            <button
+              disabled={isLoggingIn}
+              className="w-full bg-[#1a2e25] text-white py-4 font-bold tracking-[0.3em] text-xs uppercase hover:bg-[#c5a059] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3"
+            >
+              {isLoggingIn ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span>Authorizing...</span>
+                </>
+              ) : (
+                <span>Authorize</span>
+              )}
             </button>
           </form>
         </div>
@@ -322,8 +352,16 @@ const Admin: React.FC = () => {
                   </>
                 )}
 
-                <button className="w-full bg-[#1a2e25] text-white py-4 font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-[#c5a059] transition-all flex items-center justify-center space-x-2">
-                  {status === 'success' ? (
+                <button
+                  disabled={isAdding}
+                  className="w-full bg-[#1a2e25] text-white py-4 font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-[#c5a059] transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isAdding ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </>
+                  ) : status === 'success' ? (
                     <>
                       <CheckCircle2 className="w-4 h-4" />
                       <span>Archive Updated</span>
@@ -381,7 +419,12 @@ const Admin: React.FC = () => {
               </div>
             </div>
 
-            {filteredAndSortedImages.length === 0 ? (
+            {isFetching ? (
+              <div className="bg-white p-20 text-center border border-stone-100 flex flex-col items-center justify-center space-y-4">
+                <div className="w-8 h-8 border-2 border-[#c5a059]/30 border-t-[#c5a059] rounded-full animate-spin" />
+                <p className="text-[#c5a059] uppercase tracking-[0.2em] text-[10px] font-bold">Synchronizing Archive...</p>
+              </div>
+            ) : filteredAndSortedImages.length === 0 ? (
               <div className="bg-white p-20 text-center border-2 border-dashed border-stone-200">
                 <p className="text-stone-400 italic text-sm">No images match your current filters.</p>
               </div>
@@ -438,10 +481,18 @@ const Admin: React.FC = () => {
                       {editingId === img.id ? (
                         <>
                           <button
+                            disabled={isUpdating}
                             onClick={() => handleUpdate(img.id)}
-                            className="text-emerald-700 font-bold text-[10px] uppercase tracking-widest bg-emerald-50 px-4 py-2 hover:bg-emerald-100 transition-colors"
+                            className="text-emerald-700 font-bold text-[10px] uppercase tracking-widest bg-emerald-50 px-4 py-2 hover:bg-emerald-100 transition-colors disabled:opacity-50 flex items-center space-x-2"
                           >
-                            Save
+                            {isUpdating ? (
+                              <>
+                                <div className="w-3 h-3 border-2 border-emerald-700/30 border-t-emerald-700 rounded-full animate-spin" />
+                                <span>Saving</span>
+                              </>
+                            ) : (
+                              <span>Save</span>
+                            )}
                           </button>
                           <button
                             onClick={() => setEditingId(null)}
@@ -459,10 +510,15 @@ const Admin: React.FC = () => {
                             Edit
                           </button>
                           <button
+                            disabled={deletingId === img.id}
                             onClick={() => handleDelete(img.id)}
-                            className="text-stone-300 hover:text-red-700 transition-colors p-2"
+                            className="text-stone-300 hover:text-red-700 transition-colors p-2 disabled:opacity-50"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            {deletingId === img.id ? (
+                              <div className="w-4 h-4 border-2 border-red-700/30 border-t-red-700 rounded-full animate-spin" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
                           </button>
                         </>
                       )}
