@@ -1,9 +1,22 @@
-
-import React from 'react';
-import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail, X, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const hasSeenPopup = sessionStorage.getItem('hasSeenComingSoon');
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => setShowPopup(true), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const closePopup = () => {
+    setShowPopup(false);
+    sessionStorage.setItem('hasSeenComingSoon', 'true');
+  };
 
   const rooms = [
     {
@@ -256,6 +269,55 @@ const Home: React.FC = () => {
           </a>
         </div>
       </section>
+
+      {/* Coming Soon Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#0f1a15]/40 backdrop-blur-sm animate-in fade-in duration-700">
+          <div className="max-w-xl w-full bg-[#faf9f6]/95 backdrop-blur-md shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border border-[#c5a059]/20 p-12 relative overflow-hidden animate-in zoom-in slide-in-from-bottom-8 duration-700">
+            {/* Decorative Element */}
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <Trees className="w-32 h-32 text-[#c5a059]" />
+            </div>
+
+            <button
+              onClick={closePopup}
+              className="absolute top-6 right-6 text-stone-400 hover:text-[#c5a059] transition-colors"
+            >
+              <X className="w-6 h-6 stroke-1" />
+            </button>
+
+            <div className="relative z-10 space-y-8">
+              <div className="flex items-center space-x-3 text-[#c5a059]">
+                <Sparkles className="w-5 h-5" />
+                <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Inauguration Pending</span>
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-4xl md:text-5xl font-serif text-[#1a2e25] leading-tight">
+                  A New Era of Luxury is <span className="italic">Awakening</span>
+                </h2>
+                <div className="w-16 h-[1px] bg-[#c5a059]"></div>
+              </div>
+
+              <div className="space-y-6 text-stone-600 font-light leading-relaxed">
+                <p>
+                  The Cardamom Cove is currently in its final stages of transformation as we meticulously refine every detail of your future sanctuary.
+                </p>
+                <p>
+                  While our doors are yet to open, we invite you to immerse yourself in our visual archive and explore the architectural journey of the Cove.
+                </p>
+              </div>
+
+              <button
+                onClick={closePopup}
+                className="w-full bg-[#1a2e25] text-white py-5 font-bold tracking-[0.3em] text-[10px] uppercase hover:bg-[#c5a059] transition-all"
+              >
+                Begin the Experience
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
