@@ -8,60 +8,103 @@ const Admin: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
+
   const [newImage, setNewImage] = useState({
     url: '',
     title: '',
     category: 'exterior' as const
   });
-  
+
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
   const [status, setStatus] = useState<'idle' | 'success'>('idle');
 
   useEffect(() => {
-    const session = localStorage.getItem('admin_session');
-    if (session === 'active') setIsLoggedIn(true);
-    
-    const stored = localStorage.getItem('custom_gallery_images');
-    if (stored) setUploadedImages(JSON.parse(stored));
-  }, []);
+    const token = localStorage.getItem('admin_token');
+    if (token) setIsLoggedIn(true);
 
-  const handleLogin = (e: React.FormEvent) => {
+    const fetchCustomImages = async () => {
+      try {
+        const response = await fetch('/api/images');
+        if (response.ok) {
+          const images = await response.json();
+          // Map MongoDB _id to id
+          setUploadedImages(images.map((img: any) => ({ ...img, id: img._id })));
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    };
+
+    if (token) fetchCustomImages();
+  }, [isLoggedIn]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'cardamom2025') {
-      setIsLoggedIn(true);
-      localStorage.setItem('admin_session', 'active');
-      setError('');
-    } else {
-      setError('Invalid credentials for the curator portal.');
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+        localStorage.setItem('admin_token', token);
+        setIsLoggedIn(true);
+        setError('');
+      } else {
+        setError('Invalid credentials for the curator portal.');
+      }
+    } catch (err) {
+      setError('Connection error. Please try again.');
     }
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('admin_session');
+    localStorage.removeItem('admin_token');
   };
 
-  const handleAddImage = (e: React.FormEvent) => {
+  const handleAddImage = async (e: React.FormEvent) => {
     e.preventDefault();
-    const imageToAdd: GalleryImage = {
-      id: Date.now().toString(),
-      ...newImage
-    };
-    
-    const updated = [imageToAdd, ...uploadedImages];
-    setUploadedImages(updated);
-    localStorage.setItem('custom_gallery_images', JSON.stringify(updated));
-    
-    setNewImage({ url: '', title: '', category: 'exterior' });
-    setStatus('success');
-    setTimeout(() => setStatus('idle'), 3000);
+    const token = localStorage.getItem('admin_token');
+
+    try {
+      const response = await fetch('/api/images', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newImage)
+      });
+
+      if (response.ok) {
+        const addedImage = await response.json();
+        setUploadedImages([{ ...addedImage, id: addedImage._id }, ...uploadedImages]);
+        setNewImage({ url: '', title: '', category: 'exterior' });
+        setStatus('success');
+        setTimeout(() => setStatus('idle'), 3000);
+      }
+    } catch (err) {
+      console.error('Error adding image:', err);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    const updated = uploadedImages.filter(img => img.id !== id);
-    setUploadedImages(updated);
-    localStorage.setItem('custom_gallery_images', JSON.stringify(updated));
+  const handleDelete = async (id: string) => {
+    const token = localStorage.getItem('admin_token');
+    try {
+      const response = await fetch(`/api/images/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        setUploadedImages(uploadedImages.filter(img => img.id !== id));
+      }
+    } catch (err) {
+      console.error('Error deleting image:', err);
+    }
   };
 
   if (!isLoggedIn) {
@@ -73,12 +116,12 @@ const Admin: React.FC = () => {
             <h1 className="font-serif text-3xl text-[#1a2e25]">Curator Portal</h1>
             <p className="text-[10px] uppercase tracking-[0.3em] text-stone-400 mt-2">Restricted Access</p>
           </div>
-          
+
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-1">
               <label className="text-[10px] uppercase tracking-widest font-bold text-stone-500">Username</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-white border border-stone-200 px-4 py-3 text-sm focus:ring-1 focus:ring-[#c5a059] outline-none transition-all"
@@ -86,8 +129,8 @@ const Admin: React.FC = () => {
             </div>
             <div className="space-y-1">
               <label className="text-[10px] uppercase tracking-widest font-bold text-stone-500">Password</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-white border border-stone-200 px-4 py-3 text-sm focus:ring-1 focus:ring-[#c5a059] outline-none transition-all"
@@ -111,7 +154,7 @@ const Admin: React.FC = () => {
             <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">Cove Management</span>
             <h1 className="text-4xl md:text-5xl font-serif text-[#1a2e25] mt-2">Gallery Curator</h1>
           </div>
-          <button 
+          <button
             onClick={handleLogout}
             className="flex items-center space-x-2 text-stone-400 hover:text-red-800 transition-colors uppercase tracking-widest text-[10px] font-bold"
           >
@@ -128,35 +171,35 @@ const Admin: React.FC = () => {
                 <Plus className="w-5 h-5 text-[#c5a059]" />
                 <span>Add To Archive</span>
               </h2>
-              
+
               <form onSubmit={handleAddImage} className="space-y-6">
                 <div className="space-y-2">
                   <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-stone-400">Image URL</label>
-                  <input 
+                  <input
                     required
-                    type="url" 
+                    type="url"
                     placeholder="https://images.unsplash.com/..."
                     value={newImage.url}
-                    onChange={(e) => setNewImage({...newImage, url: e.target.value})}
+                    onChange={(e) => setNewImage({ ...newImage, url: e.target.value })}
                     className="w-full bg-[#faf9f6] border-none px-4 py-3 text-xs outline-none focus:ring-1 focus:ring-[#c5a059]"
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-stone-400">Image Title</label>
-                  <input 
+                  <input
                     required
-                    type="text" 
+                    type="text"
                     placeholder="e.g. Sunset over Idukki"
                     value={newImage.title}
-                    onChange={(e) => setNewImage({...newImage, title: e.target.value})}
+                    onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
                     className="w-full bg-[#faf9f6] border-none px-4 py-3 text-xs outline-none focus:ring-1 focus:ring-[#c5a059]"
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-stone-400">Category</label>
-                  <select 
+                  <select
                     value={newImage.category}
-                    onChange={(e) => setNewImage({...newImage, category: e.target.value as any})}
+                    onChange={(e) => setNewImage({ ...newImage, category: e.target.value as any })}
                     className="w-full bg-[#faf9f6] border-none px-4 py-3 text-xs outline-none focus:ring-1 focus:ring-[#c5a059] uppercase tracking-widest"
                   >
                     <option value="exterior">Architecture</option>
@@ -165,7 +208,7 @@ const Admin: React.FC = () => {
                     <option value="nature">Estate</option>
                   </select>
                 </div>
-                
+
                 <button className="w-full bg-[#1a2e25] text-white py-4 font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-[#c5a059] transition-all flex items-center justify-center space-x-2">
                   {status === 'success' ? (
                     <>
@@ -189,7 +232,7 @@ const Admin: React.FC = () => {
               <ImageIcon className="w-5 h-5 text-[#c5a059]" />
               <span>Custom Collection</span>
             </h2>
-            
+
             {uploadedImages.length === 0 ? (
               <div className="bg-white p-20 text-center border-2 border-dashed border-stone-200">
                 <p className="text-stone-400 italic text-sm">No custom images added yet. Your archive is currently utilizing the core collection.</p>
@@ -206,7 +249,7 @@ const Admin: React.FC = () => {
                         <h4 className="font-serif text-lg text-[#1a2e25]">{img.title}</h4>
                         <p className="text-[9px] uppercase tracking-widest text-[#c5a059]">{img.category}</p>
                       </div>
-                      <button 
+                      <button
                         onClick={() => handleDelete(img.id)}
                         className="text-stone-300 hover:text-red-700 transition-colors p-2"
                       >
@@ -217,7 +260,7 @@ const Admin: React.FC = () => {
                 ))}
               </div>
             )}
-            
+
             <div className="mt-12 p-8 bg-[#1a2e25] text-white/60 text-[10px] tracking-widest uppercase text-center leading-loose">
               <p>Note: Custom images are persisted in your local browser cache for demonstration. For permanent production storage, integrate with a Cloud SQL or S3 bucket.</p>
             </div>

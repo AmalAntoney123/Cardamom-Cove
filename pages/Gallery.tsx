@@ -26,11 +26,27 @@ const Gallery: React.FC = () => {
   ];
 
   useEffect(() => {
-    const customStored = localStorage.getItem('custom_gallery_images');
-    const customImages: GalleryImage[] = customStored ? JSON.parse(customStored) : [];
+    const fetchCustomImages = async () => {
+      try {
+        const response = await fetch('/api/images');
+        if (response.ok) {
+          const customImages = await response.json();
+          // Map MongoDB _id to id for frontend compatibility
+          const formattedCustom = customImages.map((img: any) => ({
+            ...img,
+            id: img._id
+          }));
+          setAllImages([...formattedCustom, ...staticImages]);
+        } else {
+          setAllImages(staticImages);
+        }
+      } catch (error) {
+        console.error('Error fetching custom images:', error);
+        setAllImages(staticImages);
+      }
+    };
 
-    // We put custom images first to highlight new uploads
-    setAllImages([...customImages, ...staticImages]);
+    fetchCustomImages();
   }, []);
 
   const filteredImages = filter === 'all'
@@ -71,8 +87,8 @@ const Gallery: React.FC = () => {
               key={btn.value}
               onClick={() => setFilter(btn.value as any)}
               className={`group relative px-8 py-3 text-[10px] font-bold tracking-[0.3em] uppercase transition-all overflow-hidden rounded-full shadow-sm hover:shadow-md ${filter === btn.value
-                  ? 'text-white'
-                  : 'text-stone-500 bg-white hover:text-stone-800'
+                ? 'text-white'
+                : 'text-stone-500 bg-white hover:text-stone-800'
                 }`}
             >
               <div className={`absolute inset-0 transition-transform duration-500 origin-left scale-x-0 group-hover:scale-x-100 ${btn.color} opacity-10`}></div>
