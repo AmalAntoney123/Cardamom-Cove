@@ -35,6 +35,29 @@ export default async function handler(
         } catch (error: any) {
             res.status(500).json({ message: error.message });
         }
+    } else if (req.method === 'PATCH') {
+        // Check authentication for PATCH
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const token = authHeader.split(' ')[1];
+        try {
+            jwt.verify(token, JWT_SECRET);
+        } catch (error) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+
+        try {
+            const updatedImage = await Image.findByIdAndUpdate(id, req.body, { new: true });
+            if (!updatedImage) {
+                return res.status(404).json({ message: 'Image not found' });
+            }
+            res.status(200).json(updatedImage);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
     } else {
         res.status(405).json({ message: 'Method not allowed' });
     }

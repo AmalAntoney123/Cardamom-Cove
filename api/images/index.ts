@@ -33,8 +33,13 @@ export default async function handler(
         }
 
         try {
-            const image = await Image.create(req.body);
-            res.status(201).json(image);
+            if (Array.isArray(req.body)) {
+                const images = await Image.insertMany(req.body);
+                res.status(201).json(images);
+            } else {
+                const image = await Image.create(req.body);
+                res.status(201).json(image);
+            }
         } catch (error: any) {
             res.status(400).json({ message: error.message });
         }
