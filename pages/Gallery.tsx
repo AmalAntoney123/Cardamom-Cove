@@ -10,20 +10,6 @@ const Gallery: React.FC = () => {
   const [allImages, setAllImages] = useState<GalleryImage[]>([]);
   const { addToReveal } = useReveal();
 
-  const staticImages: GalleryImage[] = [
-    { id: 's1', url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80', title: 'Resort Hillside View', category: 'exterior' },
-    { id: 's2', url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=80', title: 'Western Ghats Mist', category: 'nature' },
-    { id: 's3', url: 'https://images.unsplash.com/photo-1516594798947-e65505dbb29d?auto=format&fit=crop&w=1200&q=80', title: 'Cardamom Spice Harvest', category: 'nature' },
-    { id: 's4', url: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1200&q=80', title: 'Luxury Room Interior', category: 'interior' },
-    { id: 's5', url: 'https://images.unsplash.com/photo-1550966842-30cae010dd4e?auto=format&fit=crop&w=1200&q=80', title: 'Hillside Dining Experience', category: 'dining' },
-    { id: 's6', url: 'https://images.unsplash.com/photo-1544161515-436cefb657f8?auto=format&fit=crop&w=1200&q=80', title: 'Entrance Pathway', category: 'exterior' },
-    { id: 's7', url: 'https://images.unsplash.com/photo-1560185127-6a43d1a4579d?auto=format&fit=crop&w=1200&q=80', title: 'Bedroom With View', category: 'interior' },
-    { id: 's8', url: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80', title: 'Reservoir Overlook', category: 'nature' },
-    { id: 's9', url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80', title: 'The Lounge', category: 'interior' },
-    { id: 's10', url: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80', title: 'Kerala Spices', category: 'dining' },
-    { id: 's11', url: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1200&q=80', title: 'Sunset from the Estate', category: 'exterior' },
-    { id: 's12', url: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80', title: 'Herbal Garden Walk', category: 'nature' },
-  ];
 
   useEffect(() => {
     const fetchCustomImages = async () => {
@@ -37,13 +23,13 @@ const Gallery: React.FC = () => {
             ...img,
             id: img._id
           }));
-          setAllImages([...formattedCustom, ...staticImages]);
+          setAllImages(formattedCustom);
         } else {
-          setAllImages(staticImages);
+          setAllImages([]);
         }
       } catch (error) {
         console.error('Error fetching custom images:', error);
-        setAllImages(staticImages);
+        setAllImages([]);
       }
     };
 
@@ -115,11 +101,9 @@ const Gallery: React.FC = () => {
                 className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-[#0f1a15]/70 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8 z-10 backdrop-blur-[2px]">
-                {img.id.startsWith('s') ? null : (
-                  <div className="absolute top-4 left-4 bg-[#c5a059] p-2 rounded-full shadow-lg">
-                    <Sparkles className="text-white w-4 h-4" />
-                  </div>
-                )}
+                <div className="absolute top-4 left-4 bg-[#c5a059] p-2 rounded-full shadow-lg">
+                  <Sparkles className="text-white w-4 h-4" />
+                </div>
                 <p className="text-white font-serif text-2xl mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">{img.title}</p>
                 <div className="w-12 h-[2px] bg-[#c5a059] mb-4 opacity-0 group-hover:opacity-100 transition-all delay-200"></div>
                 <div className="flex justify-between items-center opacity-0 group-hover:opacity-100 transition-all delay-300">
