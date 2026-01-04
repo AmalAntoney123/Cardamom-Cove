@@ -28,16 +28,21 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     const fetchCustomImages = async () => {
       try {
+        console.log('Fetching custom images from /api/images...');
         const response = await fetch('/api/images');
         if (response.ok) {
           const customImages = await response.json();
+          console.log('Custom images received:', customImages);
+
           // Map MongoDB _id to id for frontend compatibility
           const formattedCustom = customImages.map((img: any) => ({
             ...img,
             id: img._id
           }));
+          console.log('Formatted custom images:', formattedCustom);
           setAllImages([...formattedCustom, ...staticImages]);
         } else {
+          console.warn('API response not OK:', response.status);
           setAllImages(staticImages);
         }
       } catch (error) {
