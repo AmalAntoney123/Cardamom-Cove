@@ -22,13 +22,12 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Pre-save hook to hash password
-UserSchema.pre<IUser>('save', async function (next) {
+UserSchema.pre<IUser>('save', async function () {
     if (!this.isModified('password')) {
-        return next();
+        return;
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
-    next();
 });
 
 const UserModel = (mongoose.models.User as mongoose.Model<IUser>) || mongoose.model<IUser>('User', UserSchema);
