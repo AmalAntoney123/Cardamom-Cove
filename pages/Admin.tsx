@@ -261,9 +261,6 @@ const Admin: React.FC = () => {
               </div>
             )}
 
-            <div className="mt-12 p-8 bg-[#1a2e25] text-white/60 text-[10px] tracking-widest uppercase text-center leading-loose">
-              <p>Note: Custom images are persisted in your local browser cache for demonstration. For permanent production storage, integrate with a Cloud SQL or S3 bucket.</p>
-            </div>
           </div>
         </div>
       </div>
