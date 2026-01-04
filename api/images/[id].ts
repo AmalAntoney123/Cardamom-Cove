@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import dbConnect from '../lib/mongodb';
-import Image from '../models/Image';
+import dbConnect from '../lib/mongodb.js';
+import Image from '../models/Image.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';

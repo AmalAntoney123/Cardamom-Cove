@@ -28,8 +28,13 @@ async function dbConnect() {
             dbName: 'db_cardamom',
         };
 
+        console.log('Connecting to MongoDB with URI:', MONGODB_URI.split('@')[1] || 'hidden');
         cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+            console.log('MongoDB connection established');
             return mongoose;
+        }).catch((error) => {
+            console.error('MongoDB connection error:', error);
+            throw error;
         });
     }
     cached.conn = await cached.promise;

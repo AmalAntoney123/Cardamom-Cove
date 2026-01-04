@@ -1,5 +1,11 @@
 import mongoose from 'mongoose';
 
+interface IImage extends mongoose.Document {
+    url: string;
+    title: string;
+    category: 'exterior' | 'interior' | 'dining' | 'nature';
+}
+
 const ImageSchema = new mongoose.Schema({
     url: {
         type: String,
@@ -18,4 +24,6 @@ const ImageSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-export default mongoose.models.Image || mongoose.model('Image', ImageSchema);
+const ImageModel = (mongoose.models.Image as mongoose.Model<IImage>) || mongoose.model<IImage>('Image', ImageSchema);
+
+export default ImageModel;
