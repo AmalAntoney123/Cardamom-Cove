@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Palmtree } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +46,12 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <Palmtree className={`w-8 h-8 ${isScrolledOrNotHome ? 'text-[#1a2e25]' : 'text-white'}`} />
+            <img
+              src="/apple-touch-icon.png"
+              alt="Cardamom Cove Logo"
+              className={`w-8 h-8 object-contain transition-all duration-300 ${!isScrolledOrNotHome ? 'brightness-0 invert' : ''
+                }`}
+            />
             <span className={`text-2xl font-serif tracking-widest ${isScrolledOrNotHome ? 'text-[#1a2e25]' : 'text-white'}`}>
               CARDAMOM COVE
             </span>
@@ -64,8 +69,8 @@ const Navbar: React.FC = () => {
                     handleNavClick(link.path);
                   }}
                   className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 cursor-pointer ${isScrolledOrNotHome
-                      ? 'text-[#1a2e25] hover:text-[#c5a059]'
-                      : 'text-white hover:text-[#c5a059]'
+                    ? 'text-[#1a2e25] hover:text-[#c5a059]'
+                    : 'text-white hover:text-[#c5a059]'
                     }`}
                 >
                   {link.name}
@@ -75,8 +80,8 @@ const Navbar: React.FC = () => {
                   key={link.name}
                   to={link.path}
                   className={`text-xs font-semibold tracking-widest uppercase transition-colors duration-300 ${isScrolledOrNotHome
-                      ? 'text-[#1a2e25] hover:text-[#c5a059]'
-                      : 'text-white hover:text-[#c5a059]'
+                    ? 'text-[#1a2e25] hover:text-[#c5a059]'
+                    : 'text-white hover:text-[#c5a059]'
                     } ${location.pathname === link.path ? 'border-b border-[#c5a059]' : ''}`}
                 >
                   {link.name}
@@ -84,8 +89,8 @@ const Navbar: React.FC = () => {
               )
             ))}
             <button className={`px-6 py-2 rounded-sm transition-all duration-300 uppercase tracking-widest text-[10px] font-bold border ${isScrolledOrNotHome
-                ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]'
-                : 'bg-transparent text-white border-white hover:bg-white hover:text-[#1a2e25]'
+              ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]'
+              : 'bg-transparent text-white border-white hover:bg-white hover:text-[#1a2e25]'
               }`}>
               Reserve
             </button>
