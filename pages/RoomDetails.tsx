@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { Maximize2, X, ChevronRight, Wind, Coffee, Flame, CheckCircle2, ArrowLeft, ArrowRight, AirVent, Bed } from 'lucide-react';
+import { Maximize2, X, ChevronRight, Wind, Coffee, Flame, CheckCircle2, ArrowLeft, ArrowRight, AirVent, Bed, ChevronLeft } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
 
 // Hardcoded data for the 3 rooms
@@ -53,6 +53,9 @@ const RoomDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [roomImages, setRoomImages] = useState<any[]>([]);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
 
     // Scroll to top on mount
     useEffect(() => {
@@ -77,6 +80,30 @@ const RoomDetails: React.FC = () => {
 
         fetchImages();
     }, [id]);
+
+    const checkScroll = () => {
+        if (scrollContainerRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+            setCanScrollLeft(scrollLeft > 0);
+            // using -1 to account for any decimal pixel rounding issues
+            setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+        }
+    };
+
+    useEffect(() => {
+        checkScroll();
+        window.addEventListener('resize', checkScroll);
+        return () => window.removeEventListener('resize', checkScroll);
+    }, [roomImages]);
+
+    const scrollGallery = (direction: 'left' | 'right') => {
+        if (scrollContainerRef.current) {
+            const scrollAmount = direction === 'left' ? -400 : 400;
+            scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            // setTimeout to check scroll after the smooth scroll animation finishes
+            setTimeout(checkScroll, 300);
+        }
+    };
 
     if (!id || !ROOM_DATA[id]) {
         return <Navigate to="/" />;
@@ -164,31 +191,61 @@ const RoomDetails: React.FC = () => {
             {roomImages.length > 0 && (
                 <section className="py-24 bg-white border-t border-stone-100">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">Visuals</span>
-                            <h2 className="text-3xl font-serif text-[#1a2e25] mt-4 mb-6">{room.name} Gallery</h2>
+                        <div className="flex items-center justify-between mb-16 relative">
+                            <div className="text-left">
+                                <span className="text-[#c5a059] uppercase tracking-[0.3em] font-bold text-[10px]">Visuals</span>
+                                <h2 className="text-3xl font-serif text-[#1a2e25] mt-4 mb-0">{room.name} Gallery</h2>
+                            </div>
                         </div>
 
-                        <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
-                            {roomImages.map((img: any, idx: number) => (
-                                <div
-                                    key={idx}
-                                    className="relative group cursor-pointer overflow-hidden rounded-sm break-inside-avoid shadow-lg border border-stone-100"
-                                    onClick={() => setSelectedImage(img.url)}
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 to-transparent z-0"></div>
-                                    <img
-                                        src={img.url}
-                                        alt={img.title || `Gallery ${idx + 1}`}
-                                        className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-[#0f1a15]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                                        <div className="bg-white/20 p-3 rounded-full backdrop-blur-sm transform scale-50 group-hover:scale-100 transition-transform duration-300">
-                                            <Maximize2 className="text-white w-6 h-6" />
+                        <div className="relative group/carousel">
+                            <button
+                                onClick={() => scrollGallery('left')}
+                                className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
+                                    canScrollLeft 
+                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
+                                    : 'opacity-0 -translate-x-4 pointer-events-none'
+                                }`}
+                            >
+                                <ChevronLeft className="w-5 md:w-6 h-5 md:h-6" />
+                            </button>
+                            
+                            <button
+                                onClick={() => scrollGallery('right')}
+                                className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
+                                    canScrollRight 
+                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
+                                    : 'opacity-0 translate-x-4 pointer-events-none'
+                                }`}
+                            >
+                                <ChevronRight className="w-5 md:w-6 h-5 md:h-6" />
+                            </button>
+
+                            <div
+                                className="flex overflow-x-auto gap-4 md:gap-6 pb-8 pt-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-4 md:px-0"
+                                ref={scrollContainerRef}
+                                onScroll={checkScroll}
+                            >
+                                {roomImages.map((img: any, idx: number) => (
+                                    <div
+                                        key={idx}
+                                        className="relative group cursor-pointer overflow-hidden rounded-sm shadow-lg border border-stone-100 flex-shrink-0 w-[85vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] snap-center aspect-[3/4]"
+                                        onClick={() => setSelectedImage(img.url)}
+                                    >
+                                        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 to-transparent z-0"></div>
+                                        <img
+                                            src={img.url}
+                                            alt={img.title || `Gallery ${idx + 1}`}
+                                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-[#0f1a15]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+                                            <div className="bg-white/20 p-3 rounded-full backdrop-blur-sm transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                                <Maximize2 className="text-white w-6 h-6" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </section>
