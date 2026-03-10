@@ -16,7 +16,9 @@ const ROOM_DATA: Record<string, any> = {
             { icon: Wind, text: "Highland Breeze Balcony" },
             { icon: CheckCircle2, text: "King-sized Bed" },
             { icon: CheckCircle2, text: "En-suite Luxury Bath" },
-            { icon: AirVent, text: "Air Conditioning" }
+            { icon: AirVent, text: "Air Conditioning" },
+            { icon: Flame, text: "Fire Place" },
+
         ]
     },
     canopy: {
@@ -31,7 +33,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: Bed, text: "1 King Bed" },
             { icon: Bed, text: "1 Twin Bed" },
             { icon: CheckCircle2, text: "Valley View Deck" },
-            { icon: AirVent, text: "Air Conditioning" }
+            { icon: AirVent, text: "Air Conditioning" },
         ],
 
     },
@@ -201,22 +203,20 @@ const RoomDetails: React.FC = () => {
                         <div className="relative group/carousel">
                             <button
                                 onClick={() => scrollGallery('left')}
-                                className={`absolute left-2 md:left-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
-                                    canScrollLeft 
-                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
+                                className={`absolute left-2 md:left-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${canScrollLeft
+                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0'
                                     : 'opacity-0 -translate-x-4 pointer-events-none'
-                                }`}
+                                    }`}
                             >
                                 <ChevronLeft className="w-5 md:w-6 h-5 md:h-6" />
                             </button>
-                            
+
                             <button
                                 onClick={() => scrollGallery('right')}
-                                className={`absolute right-2 md:right-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
-                                    canScrollRight 
-                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
+                                className={`absolute right-2 md:right-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${canScrollRight
+                                    ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0'
                                     : 'opacity-0 translate-x-4 pointer-events-none'
-                                }`}
+                                    }`}
                             >
                                 <ChevronRight className="w-5 md:w-6 h-5 md:h-6" />
                             </button>
