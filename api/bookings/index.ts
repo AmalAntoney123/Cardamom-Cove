@@ -21,7 +21,7 @@ async function sendNotificationEmail(booking: {
     room?: string;
     message: string;
 }) {
-    const user = process.env.SMTP_USER;
+    const user = process.env.MAIL_USER;
     const pass = process.env.SMTP_PASS || process.env.MAIL_PASS;
     const to = process.env.NOTIFY_EMAIL || user;
 
@@ -31,7 +31,9 @@ async function sendNotificationEmail(booking: {
     }
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: { user, pass },
     });
 
@@ -86,10 +88,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method === 'POST') {
         try {
             const booking = await Booking.create(req.body);
-            // Fire-and-forget email — don't fail the response if mail fails
-            sendNotificationEmail(req.body).catch((e) =>
-                console.error('Email notification error:', e)
-            );
+            try {
+                await sendNotificationEmail(req.body);
+            } catch (e) {
+                console.error('Email notification error:', e);
+            }
             return res.status(201).json(booking);
         } catch (err: any) {
             return res.status(400).json({ message: err.message });
