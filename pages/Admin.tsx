@@ -19,6 +19,70 @@ const Admin: React.FC = () => {
 
   const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
   const [calendarDate, setCalendarDate] = useState(new Date());
+  const [isEditingDetail, setIsEditingDetail] = useState(false);
+  const [editDetail, setEditDetail] = useState({ checkIn: '', checkOut: '', room: 'any' });
+  const [isSavingDetail, setIsSavingDetail] = useState(false);
+
+  // ── Bookings Search & Pagination ──
+  const [bookingSearch, setBookingSearch] = useState('');
+  const [bookingPage, setBookingPage] = useState(1);
+  const BOOKINGS_PER_PAGE = 10;
+
+
+  // ── Admin-add booking ──
+  const [showAddBooking, setShowAddBooking] = useState(false);
+  const [isAddingBooking, setIsAddingBooking] = useState(false);
+  const [newBookingForm, setNewBookingForm] = useState({
+    name: '', email: '', phone: '',
+    checkIn: '', checkOut: '',
+    room: 'any', message: '', status: 'confirmed'
+  });
+
+  const handleAdminAddBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem('admin_token');
+    setIsAddingBooking(true);
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(newBookingForm),
+      });
+      if (res.ok) {
+        const created = await res.json();
+        setBookings(prev => [created, ...prev]);
+        setNewBookingForm({ name: '', email: '', phone: '', checkIn: '', checkOut: '', room: 'any', message: '', status: 'confirmed' });
+        setShowAddBooking(false);
+      }
+    } catch (e) { console.error(e); }
+    finally { setIsAddingBooking(false); }
+  };
+
+  const toDateInput = (d: string) => new Date(d).toISOString().split('T')[0];
+
+  const handleSaveDetails = async () => {
+    if (!selectedBooking) return;
+    const token = localStorage.getItem('admin_token');
+    setIsSavingDetail(true);
+    try {
+      const res = await fetch(`/api/bookings/${selectedBooking._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ checkIn: editDetail.checkIn, checkOut: editDetail.checkOut, room: editDetail.room }),
+      });
+      if (res.ok) {
+        const fromServer = await res.json();
+        // Merge: the server response wins for all fields, but we override with
+        // editDetail for the three fields we just edited — this keeps the UI
+        // correct even if the local dev Mongoose model cache is stale (missing room).
+        const merged = { ...fromServer, checkIn: editDetail.checkIn, checkOut: editDetail.checkOut, room: editDetail.room };
+        setBookings(prev => prev.map(b => b._id === selectedBooking._id ? merged : b));
+        setSelectedBooking(merged);
+        setIsEditingDetail(false);
+      }
+    } catch (e) { console.error(e); }
+    finally { setIsSavingDetail(false); }
+  };
 
   // ── Conflict detection ──────────────────────────────────────────
   const conflictIds = useMemo(() => {
@@ -652,6 +716,22 @@ const Admin: React.FC = () => {
               </div>
             ) : (
               <>
+                {/* Header: title + Add Booking button */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CalendarDays className="w-5 h-5 text-[#c5a059]" />
+                    <h2 className="font-serif text-2xl text-[#1a2e25]">Booking Management</h2>
+                  </div>
+                  <button
+                    onClick={() => setShowAddBooking(true)}
+                    className="flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold px-4 py-2.5 border bg-[#1a2e25] border-[#1a2e25] text-white hover:bg-[#c5a059] hover:border-[#c5a059] transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Add Booking
+                  </button>
+                </div>
+
+
                 {/* Stats Row */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
@@ -768,13 +848,20 @@ const Admin: React.FC = () => {
                   {/* Detail / List Panel */}
                   <div className="xl:col-span-1">
                     {selectedBooking ? (
-                      /* Booking Detail */
                       <div className="bg-white shadow-sm border border-stone-100 p-6 space-y-5">
                         <div className="flex items-start justify-between">
                           <h3 className="font-serif text-xl text-[#1a2e25]">{selectedBooking.name}</h3>
-                          <button onClick={() => setSelectedBooking(null)} className="text-stone-300 hover:text-stone-600 transition-colors">
-                            <X className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center gap-2">
+                            {!isEditingDetail && (
+                              <button
+                                onClick={() => { setIsEditingDetail(true); setEditDetail({ checkIn: toDateInput(selectedBooking.checkIn), checkOut: toDateInput(selectedBooking.checkOut), room: selectedBooking.room || 'any' }); }}
+                                className="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] border border-[#c5a059]/40 px-2.5 py-1 hover:bg-[#c5a059]/10 transition-colors"
+                              >Edit</button>
+                            )}
+                            <button onClick={() => { setSelectedBooking(null); setIsEditingDetail(false); }} className="text-stone-300 hover:text-stone-600 transition-colors">
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
 
                         {conflictIds.has(selectedBooking._id) && (
@@ -788,23 +875,56 @@ const Admin: React.FC = () => {
                           <div className="flex items-center gap-2 text-stone-500"><Phone className="w-3 h-3" />{selectedBooking.phone}</div>
                         </div>
 
-                        {selectedBooking.room && selectedBooking.room !== 'any' && (
-                          <div className={`inline-flex items-center gap-1.5 px-3 py-1 text-[9px] uppercase tracking-widest font-bold border rounded-full ${ROOM_STYLES[selectedBooking.room]?.chip}`}>
-                            <div className={`w-1.5 h-1.5 rounded-full ${ROOM_STYLES[selectedBooking.room]?.dot}`} />
-                            {selectedBooking.room}
+                        {/* ── Edit mode: dates + room ── */}
+                        {isEditingDetail ? (
+                          <div className="space-y-3 border border-[#c5a059]/30 p-4 bg-[#faf9f6]">
+                            <p className="text-[9px] uppercase tracking-widest font-bold text-[#c5a059]">Edit Booking Details</p>
+                            <div>
+                              <label className="block text-[9px] uppercase tracking-widest text-stone-400 mb-1">Check-in</label>
+                              <input type="date" value={editDetail.checkIn} onChange={e => setEditDetail(p => ({ ...p, checkIn: e.target.value }))} className="w-full border border-stone-200 px-3 py-2 text-xs text-[#1a2e25] focus:outline-none focus:border-[#c5a059]" />
+                            </div>
+                            <div>
+                              <label className="block text-[9px] uppercase tracking-widest text-stone-400 mb-1">Check-out</label>
+                              <input type="date" value={editDetail.checkOut} min={editDetail.checkIn} onChange={e => setEditDetail(p => ({ ...p, checkOut: e.target.value }))} className="w-full border border-stone-200 px-3 py-2 text-xs text-[#1a2e25] focus:outline-none focus:border-[#c5a059]" />
+                            </div>
+                            <div>
+                              <label className="block text-[9px] uppercase tracking-widest text-stone-400 mb-1">Room Assignment</label>
+                              <select value={editDetail.room} onChange={e => setEditDetail(p => ({ ...p, room: e.target.value }))} className="w-full border border-stone-200 px-3 py-2 text-xs text-[#1a2e25] focus:outline-none focus:border-[#c5a059]">
+                                <option value="any">No Preference</option>
+                                <option value="The Emerald Suite">The Emerald Suite</option>
+                                <option value="The Canopy Loft">The Canopy Loft</option>
+                                <option value="The Mist Retreat">The Mist Retreat</option>
+                              </select>
+                            </div>
+                            <div className="flex gap-2 pt-1">
+                              <button onClick={handleSaveDetails} disabled={isSavingDetail} className="flex-1 flex items-center justify-center gap-1.5 text-[9px] uppercase tracking-widest font-bold bg-[#1a2e25] text-white py-2.5 hover:bg-[#c5a059] transition-colors disabled:opacity-60">
+                                {isSavingDetail ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : null}
+                                Save
+                              </button>
+                              <button onClick={() => setIsEditingDetail(false)} className="px-4 text-[9px] uppercase tracking-widest font-bold border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors">Cancel</button>
+                            </div>
                           </div>
+                        ) : (
+                          /* Read-only: room badge + dates */
+                          <>
+                            {selectedBooking.room && selectedBooking.room !== 'any' && (
+                              <div className={`inline-flex items-center gap-1.5 px-3 py-1 text-[9px] uppercase tracking-widest font-bold border rounded-full ${ROOM_STYLES[selectedBooking.room]?.chip}`}>
+                                <div className={`w-1.5 h-1.5 rounded-full ${ROOM_STYLES[selectedBooking.room]?.dot}`} />
+                                {selectedBooking.room}
+                              </div>
+                            )}
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="bg-stone-50 p-3">
+                                <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-in</p>
+                                <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkIn)}</p>
+                              </div>
+                              <div className="bg-stone-50 p-3">
+                                <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-out</p>
+                                <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkOut)}</p>
+                              </div>
+                            </div>
+                          </>
                         )}
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="bg-stone-50 p-3">
-                            <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-in</p>
-                            <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkIn)}</p>
-                          </div>
-                          <div className="bg-stone-50 p-3">
-                            <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-out</p>
-                            <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkOut)}</p>
-                          </div>
-                        </div>
 
                         {selectedBooking.message && (
                           <p className="text-stone-500 text-sm font-light italic border-l-2 border-[#c5a059]/40 pl-3">"{selectedBooking.message}"</p>
@@ -843,45 +963,97 @@ const Admin: React.FC = () => {
                       </div>
                     ) : (
                       /* Booking List (click to open detail) */
-                      <div className="space-y-2">
-                        <p className="text-[9px] uppercase tracking-widest font-bold text-stone-400 mb-3">
-                          {bookings.length} Enquir{bookings.length === 1 ? 'y' : 'ies'} · click to view
-                        </p>
-                        {bookings.length === 0 ? (
-                          <div className="bg-white p-10 text-center border-2 border-dashed border-stone-200">
-                            <p className="text-stone-400 italic text-sm">No booking enquiries yet.</p>
-                          </div>
-                        ) : bookings.map(b => {
-                          const rs = ROOM_STYLES[b.room] || ROOM_STYLES['any'];
-                          const isConflict = conflictIds.has(b._id);
+                      <div className="space-y-4">
+                        <div className="flex flex-col gap-3">
+                          <p className="text-[9px] uppercase tracking-widest font-bold text-stone-400">
+                            {bookings.length} Enquir{bookings.length === 1 ? 'y' : 'ies'} Total
+                          </p>
+                          <input
+                            type="text"
+                            placeholder="Search by name, email, or phone..."
+                            value={bookingSearch}
+                            onChange={e => { setBookingSearch(e.target.value); setBookingPage(1); }}
+                            className="w-full border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059] bg-white"
+                          />
+                        </div>
+
+                        {(() => {
+                          const filtered = bookings.filter(b => {
+                            const term = bookingSearch.toLowerCase();
+                            return b.name.toLowerCase().includes(term) ||
+                              b.email.toLowerCase().includes(term) ||
+                              b.phone.toLowerCase().includes(term);
+                          });
+
+                          const totalPages = Math.ceil(filtered.length / BOOKINGS_PER_PAGE) || 1;
+                          const currentData = filtered.slice((bookingPage - 1) * BOOKINGS_PER_PAGE, bookingPage * BOOKINGS_PER_PAGE);
+
                           return (
-                            <button
-                              key={b._id}
-                              onClick={() => setSelectedBooking(b)}
-                              className={`w-full text-left bg-white p-4 border shadow-sm hover:border-[#c5a059] transition-colors ${isConflict ? 'border-red-300' : 'border-stone-100'
-                                }`}
-                            >
-                              <div className="flex items-start justify-between gap-2">
-                                <div className="min-w-0">
-                                  <p className="font-semibold text-[#1a2e25] text-sm truncate">{b.name}</p>
-                                  <p className="text-[9px] text-stone-400 mt-0.5">{fmt(b.checkIn)} → {fmt(b.checkOut)}</p>
+                            <>
+                              {filtered.length === 0 ? (
+                                <div className="bg-white p-10 text-center border-2 border-dashed border-stone-200">
+                                  <p className="text-stone-400 italic text-sm">No enquiries found.</p>
                                 </div>
-                                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                                  <span className={`text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 border rounded-full ${STATUS_STYLES[b.status] || STATUS_STYLES.pending}`}>
-                                    {b.status}
-                                  </span>
-                                  {isConflict && <AlertTriangle className="w-3 h-3 text-red-500" />}
-                                </div>
-                              </div>
-                              {b.room && b.room !== 'any' && (
-                                <div className="flex items-center gap-1 mt-2">
-                                  <div className={`w-1.5 h-1.5 rounded-full ${rs.dot}`} />
-                                  <span className="text-[8px] text-stone-400 uppercase tracking-widest">{rs.label}</span>
+                              ) : (
+                                <div className="space-y-2">
+                                  {currentData.map(b => {
+                                    const rs = ROOM_STYLES[b.room] || ROOM_STYLES['any'];
+                                    const isConflict = conflictIds.has(b._id);
+                                    return (
+                                      <button
+                                        key={b._id}
+                                        onClick={() => setSelectedBooking(b)}
+                                        className={`w-full text-left bg-white p-4 border shadow-sm hover:border-[#c5a059] transition-colors ${isConflict ? 'border-red-300' : 'border-stone-100'}`}
+                                      >
+                                        <div className="flex items-start justify-between gap-2">
+                                          <div className="min-w-0">
+                                            <p className="font-semibold text-[#1a2e25] text-sm truncate">{b.name}</p>
+                                            <p className="text-[9px] text-stone-400 mt-0.5">{fmt(b.checkIn)} → {fmt(b.checkOut)}</p>
+                                          </div>
+                                          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                                            <span className={`text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 border rounded-full ${STATUS_STYLES[b.status] || STATUS_STYLES.pending}`}>
+                                              {b.status}
+                                            </span>
+                                            {isConflict && <AlertTriangle className="w-3 h-3 text-red-500" />}
+                                          </div>
+                                        </div>
+                                        {b.room && b.room !== 'any' && (
+                                          <div className="flex items-center gap-1 mt-2">
+                                            <div className={`w-1.5 h-1.5 rounded-full ${rs.dot}`} />
+                                            <span className="text-[8px] text-stone-400 uppercase tracking-widest">{rs.label}</span>
+                                          </div>
+                                        )}
+                                      </button>
+                                    );
+                                  })}
                                 </div>
                               )}
-                            </button>
+
+                              {/* Pagination Controls */}
+                              {totalPages > 1 && (
+                                <div className="flex items-center justify-between pt-2">
+                                  <button
+                                    disabled={bookingPage === 1}
+                                    onClick={() => setBookingPage(p => Math.max(1, p - 1))}
+                                    className="px-3 py-1 border border-stone-200 text-[9px] uppercase tracking-widest font-bold text-stone-500 hover:bg-stone-50 disabled:opacity-30 transition-colors"
+                                  >
+                                    Prev
+                                  </button>
+                                  <span className="text-[9px] uppercase tracking-widest text-stone-400 font-bold">
+                                    Page {bookingPage} / {totalPages}
+                                  </span>
+                                  <button
+                                    disabled={bookingPage === totalPages}
+                                    onClick={() => setBookingPage(p => Math.min(totalPages, p + 1))}
+                                    className="px-3 py-1 border border-stone-200 text-[9px] uppercase tracking-widest font-bold text-stone-500 hover:bg-stone-50 disabled:opacity-30 transition-colors"
+                                  >
+                                    Next
+                                  </button>
+                                </div>
+                              )}
+                            </>
                           );
-                        })}
+                        })()}
                       </div>
                     )}
                   </div>
@@ -891,6 +1063,81 @@ const Admin: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Modal Overlay for Add Booking */}
+      {showAddBooking && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-[#faf9f6] w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl rounded-sm">
+            <div className="sticky top-0 bg-[#1a2e25] px-6 py-4 flex items-center justify-between z-10">
+              <div>
+                <h3 className="text-[#c5a059] font-serif text-xl">Add Booking</h3>
+                <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-white/60">Admin Entry</p>
+              </div>
+              <button type="button" onClick={() => setShowAddBooking(false)} className="text-white/60 hover:text-white transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleAdminAddBooking} className="p-6 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Guest Name *</label>
+                  <input required type="text" value={newBookingForm.name} onChange={e => setNewBookingForm(p => ({ ...p, name: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]" />
+                </div>
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Email {!newBookingForm.phone && '*'}</label>
+                  <input required={!newBookingForm.phone} type="email" value={newBookingForm.email} onChange={e => setNewBookingForm(p => ({ ...p, email: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]" />
+                </div>
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Phone {!newBookingForm.email && '*'}</label>
+                  <input required={!newBookingForm.email} type="tel" value={newBookingForm.phone} onChange={e => setNewBookingForm(p => ({ ...p, phone: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]" />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Check-in *</label>
+                  <input required type="date" value={newBookingForm.checkIn} onChange={e => setNewBookingForm(p => ({ ...p, checkIn: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]" />
+                </div>
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Check-out *</label>
+                  <input required type="date" value={newBookingForm.checkOut} min={newBookingForm.checkIn} onChange={e => setNewBookingForm(p => ({ ...p, checkOut: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]" />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Room Assignment *</label>
+                  <select value={newBookingForm.room} onChange={e => setNewBookingForm(p => ({ ...p, room: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]">
+                    <option value="any">No Preference</option>
+                    <option value="The Emerald Suite">The Emerald Suite</option>
+                    <option value="The Canopy Loft">The Canopy Loft</option>
+                    <option value="The Mist Retreat">The Mist Retreat</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Status</label>
+                  <select value={newBookingForm.status} onChange={e => setNewBookingForm(p => ({ ...p, status: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059]">
+                    <option value="confirmed">Confirmed</option>
+                    <option value="pending">Pending</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-[9px] uppercase tracking-widest text-[#1a2e25] font-bold mb-1">Admin Notes</label>
+                <textarea value={newBookingForm.message} rows={3} onChange={e => setNewBookingForm(p => ({ ...p, message: e.target.value }))} className="w-full bg-white border border-stone-200 px-3 py-2 text-xs focus:outline-none focus:border-[#c5a059] resize-none" />
+              </div>
+              <div className="pt-4 border-t border-stone-200 flex justify-end gap-3">
+                <button type="button" onClick={() => setShowAddBooking(false)} className="px-6 py-2.5 text-[9px] uppercase tracking-widest font-bold text-stone-500 hover:text-[#1a2e25] transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" disabled={isAddingBooking} className="flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold bg-[#1a2e25] text-white px-6 py-2.5 hover:bg-[#c5a059] transition-colors disabled:opacity-60">
+                  {isAddingBooking ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+                  Create Booking
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

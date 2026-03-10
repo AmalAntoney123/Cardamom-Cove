@@ -18,6 +18,7 @@ async function sendNotificationEmail(booking: {
     phone: string;
     checkIn: Date | string;
     checkOut: Date | string;
+    room?: string;
     message: string;
 }) {
     const user = process.env.SMTP_USER;
@@ -52,6 +53,7 @@ async function sendNotificationEmail(booking: {
     <tr><td style="padding:8px 0;color:#888;">Phone</td><td style="padding:8px 0;">${booking.phone}</td></tr>
     <tr><td style="padding:8px 0;color:#888;">Check-in</td><td style="padding:8px 0;">${fmt(booking.checkIn)}</td></tr>
     <tr><td style="padding:8px 0;color:#888;">Check-out</td><td style="padding:8px 0;">${fmt(booking.checkOut)}</td></tr>
+    <tr><td style="padding:8px 0;color:#888;vertical-align:top;">Room Preference</td><td style="padding:8px 0;font-weight:bold;color:#1a2e25;">${booking.room && booking.room !== 'any' ? booking.room : '<em style="color:#aaa;">No preference</em>'}</td></tr>
     <tr><td style="padding:8px 0;color:#888;vertical-align:top;">Message</td><td style="padding:8px 0;">${booking.message || '<em style="color:#aaa;">No message</em>'}</td></tr>
   </table>
   <hr style="border:none;border-top:1px solid #e5e0d8;margin:20px 0;" />

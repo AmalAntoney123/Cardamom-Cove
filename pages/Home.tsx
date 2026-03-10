@@ -51,19 +51,19 @@ const Home: React.FC = () => {
     {
       name: "The Emerald Suite",
       description: "A sophisticated sanctuary offering refined luxury with a king-sized view of the Western Ghats.",
-      img: "/images/rendering-1.png",
+      img: "/images/emerald/emerald-1.png",
       features: "Mini Kitchen • King Bed • Premier Suite"
     },
     {
       name: "The Canopy Loft",
       description: "An architectural marvel featuring a spacious mezzanine floor and two beds, perfect for elevated comfort.",
-      img: "/images/rendering-2.png",
+      img: "/images/canopy/canopy-1.png",
       features: "Mini Kitchen • Mezzanine Floor • 2 Beds"
     },
     {
       name: "The Mist Retreat",
       description: "An intimate and cozy escape designed for companions, featuring bespoke twin sharing beds and garden access.",
-      img: "/images/rendering-3.png",
+      img: "/images/mist/mist-1.png",
       features: "Mini Kitchen • Twin Sharing Beds • Cozy Hideaway"
     }
   ];
@@ -275,10 +275,10 @@ const Home: React.FC = () => {
                       <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="YOUR NAME" required className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
                     </div>
                     <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <input type="email" name="email" value={formData.email} onChange={handleFormChange} placeholder="YOUR EMAIL" required className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
+                      <input type="email" name="email" value={formData.email} onChange={handleFormChange} placeholder="YOUR EMAIL" required={!formData.phone} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
                     </div>
                     <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleFormChange} placeholder="YOUR PHONE" required className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleFormChange} placeholder="YOUR PHONE" required={!formData.email} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
                     </div>
                     <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
                       <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Check-in Date</label>

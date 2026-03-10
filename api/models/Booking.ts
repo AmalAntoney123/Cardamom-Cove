@@ -19,11 +19,17 @@ const BookingSchema = new mongoose.Schema(
         },
         email: {
             type: String,
-            required: [true, 'Please provide an email.'],
+            validate: {
+                validator: function (this: any, v: string) { return !!v || !!this.phone; },
+                message: 'Please provide either an email or a phone number.'
+            }
         },
         phone: {
             type: String,
-            required: [true, 'Please provide a phone number.'],
+            validate: {
+                validator: function (this: any, v: string) { return !!v || !!this.email; },
+                message: 'Please provide either an email or a phone number.'
+            }
         },
         checkIn: {
             type: Date,
