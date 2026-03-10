@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', checkIn: '', checkOut: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', checkIn: '', checkOut: '', room: 'any', message: '' });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
       });
       if (!res.ok) throw new Error('Server error');
       setFormStatus('success');
-      setFormData({ name: '', email: '', phone: '', checkIn: '', checkOut: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', checkIn: '', checkOut: '', room: 'any', message: '' });
     } catch {
       setFormStatus('error');
     }
@@ -287,6 +287,15 @@ const Home: React.FC = () => {
                     <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
                       <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Check-out Date</label>
                       <input type="date" name="checkOut" value={formData.checkOut} onChange={handleFormChange} required min={formData.checkIn || new Date().toISOString().split('T')[0]} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25]" />
+                    </div>
+                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">
+                      <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Preferred Room</label>
+                      <select name="room" value={formData.room} onChange={handleFormChange} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25] uppercase">
+                        <option value="any">No Preference</option>
+                        <option value="The Emerald Suite">The Emerald Suite — King Bed · Premier Suite</option>
+                        <option value="The Canopy Loft">The Canopy Loft — Mezzanine Floor · 2 Beds</option>
+                        <option value="The Mist Retreat">The Mist Retreat — Twin Sharing · Cozy Hideaway</option>
+                      </select>
                     </div>
                     <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">
                       <textarea name="message" value={formData.message} onChange={handleFormChange} placeholder="YOUR MESSAGE" rows={3} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300 resize-none"></textarea>

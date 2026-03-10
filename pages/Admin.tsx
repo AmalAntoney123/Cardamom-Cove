@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { Lock, LogOut, Plus, Trash2, Image as ImageIcon, CheckCircle2, CalendarDays, Phone, Mail, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Lock, LogOut, Plus, Trash2, Image as ImageIcon, CheckCircle2, CalendarDays, Phone, Mail, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, X } from 'lucide-react';
 import { GalleryImage } from '../types';
 
 const Admin: React.FC = () => {
@@ -16,6 +16,49 @@ const Admin: React.FC = () => {
   const [isFetchingBookings, setIsFetchingBookings] = useState(false);
   const [updatingBookingId, setUpdatingBookingId] = useState<string | null>(null);
   const [deletingBookingId, setDeletingBookingId] = useState<string | null>(null);
+
+  const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+  const [calendarDate, setCalendarDate] = useState(new Date());
+
+  // ── Conflict detection ──────────────────────────────────────────
+  const conflictIds = useMemo(() => {
+    const ids = new Set<string>();
+    const active = bookings.filter(b => b.status !== 'cancelled');
+    for (let i = 0; i < active.length; i++) {
+      for (let j = i + 1; j < active.length; j++) {
+        const a = active[i], b = active[j];
+        if (!a.room || !b.room || a.room === 'any' || b.room === 'any' || a.room !== b.room) continue;
+        const s1 = new Date(a.checkIn), e1 = new Date(a.checkOut);
+        const s2 = new Date(b.checkIn), e2 = new Date(b.checkOut);
+        if (s1 < e2 && s2 < e1) { ids.add(a._id); ids.add(b._id); }
+      }
+    }
+    return ids;
+  }, [bookings]);
+
+  const ROOM_STYLES: Record<string, { chip: string; dot: string; label: string }> = {
+    'The Emerald Suite': { chip: 'bg-emerald-100 text-emerald-900 border-emerald-300', dot: 'bg-emerald-600', label: 'Emerald' },
+    'The Canopy Loft': { chip: 'bg-amber-100 text-amber-900 border-amber-300', dot: 'bg-amber-500', label: 'Canopy' },
+    'The Mist Retreat': { chip: 'bg-sky-100 text-sky-900 border-sky-300', dot: 'bg-sky-500', label: 'Mist' },
+    'any': { chip: 'bg-stone-100 text-stone-700 border-stone-300', dot: 'bg-stone-400', label: 'Any' },
+  };
+  const STATUS_STYLES: Record<string, string> = {
+    pending: 'bg-amber-50 text-amber-800 border-amber-200',
+    confirmed: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    cancelled: 'bg-red-50 text-red-800 border-red-100',
+  };
+  const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const bookingsForDay = (year: number, month: number, day: number) => {
+    const cell = new Date(year, month, day);
+    return bookings.filter(b => {
+      if (b.status === 'cancelled') return false;
+      const ci = new Date(b.checkIn); ci.setHours(0, 0, 0, 0);
+      const co = new Date(b.checkOut); co.setHours(23, 59, 59, 999);
+      return cell >= ci && cell <= co;
+    });
+  };
+
 
   const fetchBookings = async () => {
     const token = localStorage.getItem('admin_token');
@@ -598,91 +641,252 @@ const Admin: React.FC = () => {
             </div>
           </div>
         ) : (
-          /* ───── Bookings Panel ───── */
-          <div>
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center space-x-3">
-                <CalendarDays className="w-5 h-5 text-[#c5a059]" />
-                <h2 className="font-serif text-2xl text-[#1a2e25]">Booking Enquiries</h2>
-              </div>
-            </div>
-
+          /* ─────────────────────────────────────────────────────────────
+             Booking Management System
+          ──────────────────────────────────────────────────────────── */
+          <div className="space-y-8">
             {isFetchingBookings ? (
               <div className="bg-white p-20 text-center flex flex-col items-center justify-center space-y-4">
                 <div className="w-8 h-8 border-2 border-[#c5a059]/30 border-t-[#c5a059] rounded-full animate-spin" />
                 <p className="text-[#c5a059] uppercase tracking-[0.2em] text-[10px] font-bold">Loading Enquiries...</p>
               </div>
-            ) : bookings.length === 0 ? (
-              <div className="bg-white p-20 text-center border-2 border-dashed border-stone-200">
-                <p className="text-stone-400 italic text-sm">No booking enquiries yet.</p>
-              </div>
             ) : (
-              <div className="space-y-4">
-                {bookings.map((b) => {
-                  const statusColors: Record<string, string> = {
-                    pending: 'bg-amber-50 text-amber-800 border-amber-200',
-                    confirmed: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-                    cancelled: 'bg-red-50 text-red-800 border-red-100',
-                  };
-                  const fmt = (d: string) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-                  return (
-                    <div key={b._id} className="bg-white p-6 shadow-sm border border-stone-100 space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                        <div className="space-y-1">
-                          <h4 className="font-serif text-xl text-[#1a2e25]">{b.name}</h4>
-                          <div className="flex flex-wrap gap-4 text-[11px] text-stone-500">
-                            <span className="flex items-center gap-1.5"><Mail className="w-3 h-3" />{b.email}</span>
-                            <span className="flex items-center gap-1.5"><Phone className="w-3 h-3" />{b.phone}</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3 flex-shrink-0">
-                          <div className="relative">
-                            <select
-                              value={b.status}
-                              disabled={updatingBookingId === b._id}
-                              onChange={e => handleStatusChange(b._id, e.target.value)}
-                              className={`text-[9px] uppercase tracking-widest font-bold pl-3 pr-7 py-1.5 border rounded-full appearance-none outline-none cursor-pointer disabled:opacity-50 ${statusColors[b.status] || statusColors.pending}`}
-                            >
-                              <option value="pending">Pending</option>
-                              <option value="confirmed">Confirmed</option>
-                              <option value="cancelled">Cancelled</option>
-                            </select>
-                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" />
-                          </div>
-                          <button
-                            disabled={deletingBookingId === b._id}
-                            onClick={() => handleDeleteBooking(b._id)}
-                            className="text-stone-300 hover:text-red-700 transition-colors p-1.5 disabled:opacity-50"
-                          >
-                            {deletingBookingId === b._id
-                              ? <div className="w-4 h-4 border-2 border-red-700/30 border-t-red-700 rounded-full animate-spin" />
-                              : <Trash2 className="w-4 h-4" />}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-8 text-[11px]">
-                        <div>
-                          <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-in</p>
-                          <p className="font-semibold text-[#1a2e25]">{fmt(b.checkIn)}</p>
-                        </div>
-                        <div>
-                          <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-out</p>
-                          <p className="font-semibold text-[#1a2e25]">{fmt(b.checkOut)}</p>
-                        </div>
-                        <div>
-                          <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Received</p>
-                          <p className="text-stone-500">{fmt(b.createdAt)}</p>
-                        </div>
-                      </div>
-
-                      {b.message && (
-                        <p className="text-stone-500 text-sm font-light border-t border-stone-100 pt-4 italic">“{b.message}”</p>
+              <>
+                {/* Stats Row */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    { label: 'Total Enquiries', value: bookings.length, color: 'text-[#1a2e25]' },
+                    { label: 'Pending', value: bookings.filter(b => b.status === 'pending').length, color: 'text-amber-700' },
+                    { label: 'Confirmed', value: bookings.filter(b => b.status === 'confirmed').length, color: 'text-emerald-700' },
+                    { label: 'Conflicts', value: conflictIds.size, color: 'text-red-700' },
+                  ].map(s => (
+                    <div key={s.label} className="bg-white p-6 shadow-sm border border-stone-100">
+                      <p className="text-[9px] uppercase tracking-[0.25em] text-stone-400 mb-1">{s.label}</p>
+                      <p className={`font-serif text-4xl ${s.color}`}>{s.value}</p>
+                      {s.label === 'Conflicts' && s.value > 0 && (
+                        <p className="text-[9px] text-red-600 mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Same room, overlapping dates</p>
                       )}
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+
+                {/* Calendar + Detail side by side */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+                  {/* Calendar */}
+                  <div className="xl:col-span-2 bg-white shadow-sm border border-stone-100 p-6">
+                    {/* Calendar header */}
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="font-serif text-xl text-[#1a2e25]">
+                        {calendarDate.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => setCalendarDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))} className="p-1.5 hover:bg-stone-100 rounded transition-colors">
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => setCalendarDate(new Date())} className="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] px-3 py-1 border border-[#c5a059]/30 hover:bg-[#c5a059]/10 transition-colors">
+                          Today
+                        </button>
+                        <button onClick={() => setCalendarDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))} className="p-1.5 hover:bg-stone-100 rounded transition-colors">
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Day headers */}
+                    <div className="grid grid-cols-7 mb-2">
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+                        <div key={d} className="text-center text-[9px] uppercase tracking-widest text-stone-400 font-bold py-1">{d}</div>
+                      ))}
+                    </div>
+
+                    {/* Day cells */}
+                    {(() => {
+                      const yr = calendarDate.getFullYear();
+                      const mo = calendarDate.getMonth();
+                      const firstDow = (new Date(yr, mo, 1).getDay() + 6) % 7; // Mon=0
+                      const daysInMo = new Date(yr, mo + 1, 0).getDate();
+                      const today = new Date();
+                      const cells: (number | null)[] = [...Array(firstDow).fill(null), ...Array.from({ length: daysInMo }, (_, i) => i + 1)];
+                      while (cells.length % 7 !== 0) cells.push(null);
+                      return (
+                        <div className="grid grid-cols-7 gap-px bg-stone-100 border border-stone-100">
+                          {cells.map((day, idx) => {
+                            const dayBookings = day ? bookingsForDay(yr, mo, day) : [];
+                            const isToday = day && today.getFullYear() === yr && today.getMonth() === mo && today.getDate() === day;
+                            const hasConflict = dayBookings.some(b => conflictIds.has(b._id));
+                            return (
+                              <div key={idx} className={`bg-white min-h-[80px] p-1.5 ${!day ? 'opacity-0' : ''}`}>
+                                {day && (
+                                  <>
+                                    <div className={`text-[10px] font-bold mb-1 w-5 h-5 flex items-center justify-center rounded-full ${isToday ? 'bg-[#1a2e25] text-white' : hasConflict ? 'text-red-600' : 'text-stone-500'
+                                      }`}>{day}</div>
+                                    <div className="space-y-0.5">
+                                      {dayBookings.slice(0, 2).map(b => {
+                                        const rs = ROOM_STYLES[b.room] || ROOM_STYLES['any'];
+                                        const isConflict = conflictIds.has(b._id);
+                                        return (
+                                          <button
+                                            key={b._id}
+                                            onClick={() => setSelectedBooking(b)}
+                                            className={`w-full text-left text-[8px] font-bold px-1 py-0.5 rounded border truncate leading-tight ${isConflict ? 'bg-red-100 text-red-800 border-red-300' : rs.chip
+                                              }`}
+                                            title={`${b.name} · ${b.room || 'Any'}`}
+                                          >
+                                            {b.name.split(' ')[0]}
+                                          </button>
+                                        );
+                                      })}
+                                      {dayBookings.length > 2 && (
+                                        <p className="text-[8px] text-stone-400 pl-1">+{dayBookings.length - 2} more</p>
+                                      )}
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
+
+                    {/* Room legend */}
+                    <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-stone-100">
+                      {Object.entries(ROOM_STYLES).filter(([k]) => k !== 'any').map(([room, s]) => (
+                        <div key={room} className="flex items-center gap-1.5">
+                          <div className={`w-2.5 h-2.5 rounded-full ${s.dot}`} />
+                          <span className="text-[9px] uppercase tracking-widest text-stone-500">{s.label}</span>
+                        </div>
+                      ))}
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                        <span className="text-[9px] uppercase tracking-widest text-stone-500">Conflict</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Detail / List Panel */}
+                  <div className="xl:col-span-1">
+                    {selectedBooking ? (
+                      /* Booking Detail */
+                      <div className="bg-white shadow-sm border border-stone-100 p-6 space-y-5">
+                        <div className="flex items-start justify-between">
+                          <h3 className="font-serif text-xl text-[#1a2e25]">{selectedBooking.name}</h3>
+                          <button onClick={() => setSelectedBooking(null)} className="text-stone-300 hover:text-stone-600 transition-colors">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {conflictIds.has(selectedBooking._id) && (
+                          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[10px] uppercase tracking-wider font-bold px-3 py-2">
+                            <AlertTriangle className="w-3.5 h-3.5" /> Room Conflict Detected
+                          </div>
+                        )}
+
+                        <div className="space-y-3 text-[11px]">
+                          <div className="flex items-center gap-2 text-stone-500"><Mail className="w-3 h-3" />{selectedBooking.email}</div>
+                          <div className="flex items-center gap-2 text-stone-500"><Phone className="w-3 h-3" />{selectedBooking.phone}</div>
+                        </div>
+
+                        {selectedBooking.room && selectedBooking.room !== 'any' && (
+                          <div className={`inline-flex items-center gap-1.5 px-3 py-1 text-[9px] uppercase tracking-widest font-bold border rounded-full ${ROOM_STYLES[selectedBooking.room]?.chip}`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${ROOM_STYLES[selectedBooking.room]?.dot}`} />
+                            {selectedBooking.room}
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-stone-50 p-3">
+                            <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-in</p>
+                            <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkIn)}</p>
+                          </div>
+                          <div className="bg-stone-50 p-3">
+                            <p className="text-[9px] uppercase tracking-widest text-stone-400 mb-0.5">Check-out</p>
+                            <p className="font-semibold text-[#1a2e25] text-sm">{fmt(selectedBooking.checkOut)}</p>
+                          </div>
+                        </div>
+
+                        {selectedBooking.message && (
+                          <p className="text-stone-500 text-sm font-light italic border-l-2 border-[#c5a059]/40 pl-3">"{selectedBooking.message}"</p>
+                        )}
+
+                        <p className="text-[9px] text-stone-400 uppercase tracking-widest">Received {fmt(selectedBooking.createdAt)}</p>
+
+                        {/* Status selector */}
+                        <div className="relative">
+                          <select
+                            value={selectedBooking.status}
+                            disabled={updatingBookingId === selectedBooking._id}
+                            onChange={async e => {
+                              await handleStatusChange(selectedBooking._id, e.target.value);
+                              setSelectedBooking((prev: any) => prev ? { ...prev, status: e.target.value } : null);
+                            }}
+                            className={`w-full text-[9px] uppercase tracking-widest font-bold pl-3 pr-8 py-2.5 border appearance-none outline-none cursor-pointer disabled:opacity-50 ${STATUS_STYLES[selectedBooking.status] || STATUS_STYLES.pending}`}
+                          >
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none" />
+                        </div>
+
+                        <button
+                          disabled={deletingBookingId === selectedBooking._id}
+                          onClick={async () => { await handleDeleteBooking(selectedBooking._id); setSelectedBooking(null); }}
+                          className="w-full flex items-center justify-center gap-2 text-[9px] uppercase tracking-widest font-bold text-red-600 border border-red-200 py-2.5 hover:bg-red-50 transition-colors disabled:opacity-50"
+                        >
+                          {deletingBookingId === selectedBooking._id
+                            ? <div className="w-3 h-3 border-2 border-red-600/30 border-t-red-600 rounded-full animate-spin" />
+                            : <Trash2 className="w-3 h-3" />}
+                          Delete Enquiry
+                        </button>
+                      </div>
+                    ) : (
+                      /* Booking List (click to open detail) */
+                      <div className="space-y-2">
+                        <p className="text-[9px] uppercase tracking-widest font-bold text-stone-400 mb-3">
+                          {bookings.length} Enquir{bookings.length === 1 ? 'y' : 'ies'} · click to view
+                        </p>
+                        {bookings.length === 0 ? (
+                          <div className="bg-white p-10 text-center border-2 border-dashed border-stone-200">
+                            <p className="text-stone-400 italic text-sm">No booking enquiries yet.</p>
+                          </div>
+                        ) : bookings.map(b => {
+                          const rs = ROOM_STYLES[b.room] || ROOM_STYLES['any'];
+                          const isConflict = conflictIds.has(b._id);
+                          return (
+                            <button
+                              key={b._id}
+                              onClick={() => setSelectedBooking(b)}
+                              className={`w-full text-left bg-white p-4 border shadow-sm hover:border-[#c5a059] transition-colors ${isConflict ? 'border-red-300' : 'border-stone-100'
+                                }`}
+                            >
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0">
+                                  <p className="font-semibold text-[#1a2e25] text-sm truncate">{b.name}</p>
+                                  <p className="text-[9px] text-stone-400 mt-0.5">{fmt(b.checkIn)} → {fmt(b.checkOut)}</p>
+                                </div>
+                                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                                  <span className={`text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 border rounded-full ${STATUS_STYLES[b.status] || STATUS_STYLES.pending}`}>
+                                    {b.status}
+                                  </span>
+                                  {isConflict && <AlertTriangle className="w-3 h-3 text-red-500" />}
+                                </div>
+                              </div>
+                              {b.room && b.room !== 'any' && (
+                                <div className="flex items-center gap-1 mt-2">
+                                  <div className={`w-1.5 h-1.5 rounded-full ${rs.dot}`} />
+                                  <span className="text-[8px] text-stone-400 uppercase tracking-widest">{rs.label}</span>
+                                </div>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}

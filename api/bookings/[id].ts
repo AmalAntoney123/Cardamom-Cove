@@ -25,12 +25,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // ── PATCH — update status ──────────────────────────────────────
+    // ── PATCH — update status / dates / room ───────────────────────
     if (req.method === 'PATCH') {
         try {
+            const { status, checkIn, checkOut, room } = req.body;
+            const updates: Record<string, any> = {};
+            if (status !== undefined) updates.status = status;
+            if (checkIn !== undefined) updates.checkIn = checkIn;
+            if (checkOut !== undefined) updates.checkOut = checkOut;
+            if (room !== undefined) updates.room = room;
+
             const updated = await Booking.findByIdAndUpdate(
                 id,
-                { status: req.body.status },
+                updates,
                 { new: true, runValidators: true }
             );
             if (!updated) return res.status(404).json({ message: 'Booking not found' });
