@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import RoomDetails from './pages/RoomDetails';
 import Admin from './pages/Admin';
+import Contact from './pages/Contact';
 import { useReveal } from './hooks/useReveal';
 import BookingModal from './components/BookingModal';
 
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/room/:id" element={<RoomDetails />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/admin-portal" element={<Admin />} />
           </Routes>
         </main>

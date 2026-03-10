@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Gallery', path: '/gallery' },
     { name: 'Rooms', path: '/room/emerald' },
-    { name: 'Contact', path: '/#contact' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const handleNavClick = (path: string) => {
