@@ -26,6 +26,7 @@ const Admin: React.FC = () => {
   // ── Bookings Search & Pagination ──
   const [bookingSearch, setBookingSearch] = useState('');
   const [bookingPage, setBookingPage] = useState(1);
+  const [showOldBookings, setShowOldBookings] = useState(false);
   const BOOKINGS_PER_PAGE = 10;
 
 
@@ -171,7 +172,8 @@ const Admin: React.FC = () => {
   const [newImage, setNewImage] = useState({
     url: '',
     title: '',
-    category: 'exterior' as const
+    category: 'exterior' as const,
+    roomTag: 'none' as const
   });
 
   const [bulkMode, setBulkMode] = useState(false);
@@ -192,7 +194,8 @@ const Admin: React.FC = () => {
   const [editForm, setEditForm] = useState({
     url: '',
     title: '',
-    category: 'exterior' as const
+    category: 'exterior' as const,
+    roomTag: 'none' as const
   });
 
   useEffect(() => {
@@ -262,7 +265,8 @@ const Admin: React.FC = () => {
         body = urls.map(url => ({
           url: url.trim(),
           title: 'Untitled Archive',
-          category: 'nature'
+          category: 'nature',
+          roomTag: 'none'
         }));
       } else {
         body = newImage;
@@ -284,7 +288,7 @@ const Admin: React.FC = () => {
           : [{ ...added, id: added._id }];
 
         setUploadedImages([...newItems, ...uploadedImages]);
-        setNewImage({ url: '', title: '', category: 'exterior' });
+        setNewImage({ url: '', title: '', category: 'exterior', roomTag: 'none' });
         setBulkUrls('');
         setStatus('success');
         setTimeout(() => setStatus('idle'), 3000);
@@ -349,7 +353,8 @@ const Admin: React.FC = () => {
     setEditForm({
       url: img.url,
       title: img.title,
-      category: img.category as any
+      category: img.category as any,
+      roomTag: img.roomTag as any || 'none'
     });
   };
 
@@ -524,6 +529,19 @@ const Admin: React.FC = () => {
                           <option value="nature">Estate</option>
                         </select>
                       </div>
+                      <div className="space-y-2">
+                        <label className="text-[9px] uppercase tracking-[0.2em] font-bold text-stone-400">Room Tag (Optional)</label>
+                        <select
+                          value={newImage.roomTag}
+                          onChange={(e) => setNewImage({ ...newImage, roomTag: e.target.value as any })}
+                          className="w-full bg-[#faf9f6] border-none px-4 py-3 text-xs outline-none focus:ring-1 focus:ring-[#c5a059] uppercase tracking-widest"
+                        >
+                          <option value="none">No Room Tag</option>
+                          <option value="emerald">Emerald Suite</option>
+                          <option value="canopy">Canopy Loft</option>
+                          <option value="mist">Mist Retreat</option>
+                        </select>
+                      </div>
                     </>
                   )}
 
@@ -630,6 +648,16 @@ const Admin: React.FC = () => {
                               <option value="dining">Culinary</option>
                               <option value="nature">Estate</option>
                             </select>
+                            <select
+                              value={editForm.roomTag}
+                              onChange={(e) => setEditForm({ ...editForm, roomTag: e.target.value as any })}
+                              className="text-[10px] uppercase font-bold bg-stone-50 border-b border-[#c5a059] px-2 py-1 outline-none"
+                            >
+                              <option value="none">No Tag</option>
+                              <option value="emerald">Emerald</option>
+                              <option value="canopy">Canopy</option>
+                              <option value="mist">Mist</option>
+                            </select>
                             <input
                               type="text"
                               value={editForm.url}
@@ -646,6 +674,11 @@ const Admin: React.FC = () => {
                                   img.category === 'interior' ? 'Rooms' :
                                     img.category === 'dining' ? 'Culinary' : 'Estate'}
                               </span>
+                              {img.roomTag && img.roomTag !== 'none' && (
+                                <span className={`text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border bg-[#1a2e25] text-[#c5a059] border-[#c5a059]`}>
+                                  {img.roomTag}
+                                </span>
+                              )}
                             </div>
                             <p className="text-stone-400 font-mono text-[9px] truncate max-w-md">{img.url}</p>
                           </>
@@ -964,10 +997,19 @@ const Admin: React.FC = () => {
                     ) : (
                       /* Booking List (click to open detail) */
                       <div className="space-y-4">
-                        <div className="flex flex-col gap-3">
-                          <p className="text-[9px] uppercase tracking-widest font-bold text-stone-400">
-                            {bookings.length} Enquir{bookings.length === 1 ? 'y' : 'ies'} Total
-                          </p>
+                        <div className="flex flex-col gap-3 pb-2">
+                          <div className="flex items-center justify-between">
+                            <p className="text-[9px] uppercase tracking-widest font-bold text-stone-400">
+                              {bookings.length} Enquir{bookings.length === 1 ? 'y' : 'ies'} Total
+                            </p>
+                            <label className="flex items-center gap-2 cursor-pointer group">
+                              <span className={`text-[9px] uppercase tracking-widest font-bold transition-colors ${showOldBookings ? 'text-[#c5a059]' : 'text-stone-400 group-hover:text-stone-600'}`}>Show Past Bookings</span>
+                              <div className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${showOldBookings ? 'bg-[#c5a059]' : 'bg-stone-300'}`}>
+                                <input type="checkbox" className="sr-only" checked={showOldBookings} onChange={(e) => { setShowOldBookings(e.target.checked); setBookingPage(1); }} />
+                                <span className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showOldBookings ? 'translate-x-3.5' : 'translate-x-0.5'}`} />
+                              </div>
+                            </label>
+                          </div>
                           <input
                             type="text"
                             placeholder="Search by name, email, or phone..."
@@ -978,11 +1020,25 @@ const Admin: React.FC = () => {
                         </div>
 
                         {(() => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+
                           const filtered = bookings.filter(b => {
                             const term = bookingSearch.toLowerCase();
-                            return b.name.toLowerCase().includes(term) ||
+                            const matchesSearch = b.name.toLowerCase().includes(term) ||
                               b.email.toLowerCase().includes(term) ||
                               b.phone.toLowerCase().includes(term);
+
+                            if (!matchesSearch) return false;
+
+                            if (!showOldBookings) {
+                              const checkOutDate = new Date(b.checkOut);
+                              checkOutDate.setHours(0, 0, 0, 0);
+                              // Keep the booking if checkout is today or in the future
+                              if (checkOutDate < today) return false;
+                            }
+
+                            return true;
                           });
 
                           const totalPages = Math.ceil(filtered.length / BOOKINGS_PER_PAGE) || 1;

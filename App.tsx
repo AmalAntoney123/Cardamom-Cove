@@ -5,8 +5,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
+import RoomDetails from './pages/RoomDetails';
 import Admin from './pages/Admin';
 import { useReveal } from './hooks/useReveal';
+import BookingModal from './components/BookingModal';
 
 const App: React.FC = () => {
   useReveal();
@@ -19,10 +21,12 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/room/:id" element={<RoomDetails />} />
             <Route path="/admin-portal" element={<Admin />} />
           </Routes>
         </main>
         <Footer />
+        <BookingModal />
       </div>
     </Router>
   );

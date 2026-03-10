@@ -1,31 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail, X, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import BookingForm from '../components/BookingForm';
 
 const Home: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', checkIn: '', checkOut: '', room: 'any', message: '' });
-  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleBookingSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus('sending');
-    try {
-      const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) throw new Error('Server error');
-      setFormStatus('success');
-      setFormData({ name: '', email: '', phone: '', checkIn: '', checkOut: '', room: 'any', message: '' });
-    } catch {
-      setFormStatus('error');
-    }
-  };
 
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem('hasSeenBookingOpen');
@@ -49,18 +28,21 @@ const Home: React.FC = () => {
 
   const rooms = [
     {
+      id: "emerald",
       name: "The Emerald Suite",
       description: "A sophisticated sanctuary offering refined luxury with a king-sized view of the Western Ghats.",
       img: "/images/emerald/emerald-1.png",
       features: "Mini Kitchen • King Bed • Premier Suite"
     },
     {
+      id: "canopy",
       name: "The Canopy Loft",
       description: "An architectural marvel featuring a spacious mezzanine floor and two beds, perfect for elevated comfort.",
       img: "/images/canopy/canopy-1.png",
       features: "Mini Kitchen • Mezzanine Floor • 2 Beds"
     },
     {
+      id: "mist",
       name: "The Mist Retreat",
       description: "An intimate and cozy escape designed for companions, featuring bespoke twin sharing beds and garden access.",
       img: "/images/mist/mist-1.png",
@@ -187,10 +169,10 @@ const Home: React.FC = () => {
                 <div className="p-10 space-y-5">
                   <h3 className="text-3xl font-serif text-[#1a2e25]">{room.name}</h3>
                   <p className="text-stone-500 font-light leading-relaxed text-sm">{room.description}</p>
-                  <button className="pt-6 text-[#1a2e25] font-bold flex items-center space-x-3 group/btn hover:text-[#c5a059] transition-colors uppercase tracking-[0.2em] text-[10px]">
+                  <Link to={`/room/${room.id}`} className="inline-flex pt-6 text-[#1a2e25] font-bold items-center space-x-3 group/btn hover:text-[#c5a059] transition-colors uppercase tracking-[0.2em] text-[10px]">
                     Explore Space
                     <ChevronRight className="w-4 h-4 text-[#c5a059] group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -234,7 +216,7 @@ const Home: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-stone-400">Call Us</p>
-                    <p className="text-[#1a2e25] font-semibold">+91 8606 677 859</p>
+                    <p className="text-[#1a2e25] font-semibold">+91 6235 62 6334</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-6 group cursor-pointer">
@@ -259,58 +241,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="bg-white p-12 shadow-2xl reveal-right">
-              {formStatus === 'success' ? (
-                <div className="flex flex-col items-center justify-center py-16 space-y-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-[#1a2e25] flex items-center justify-center">
-                    <svg className="w-8 h-8 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                  <h3 className="font-serif text-2xl text-[#1a2e25]">Enquiry Received</h3>
-                  <p className="text-stone-500 font-light text-sm max-w-xs">Thank you, we'll be in touch shortly to confirm your stay at The Cardamom Cove.</p>
-                  <button onClick={() => setFormStatus('idle')} className="text-[10px] uppercase tracking-widest font-bold text-[#c5a059] border-b border-[#c5a059]/40 pb-1">Send Another</button>
-                </div>
-              ) : (
-                <form onSubmit={handleBookingSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">
-                      <input type="text" name="name" value={formData.name} onChange={handleFormChange} placeholder="YOUR NAME" required className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <input type="email" name="email" value={formData.email} onChange={handleFormChange} placeholder="YOUR EMAIL" required={!formData.phone} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <input type="tel" name="phone" value={formData.phone} onChange={handleFormChange} placeholder="YOUR PHONE" required={!formData.email} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300" />
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Check-in Date</label>
-                      <input type="date" name="checkIn" value={formData.checkIn} onChange={handleFormChange} required min={new Date().toISOString().split('T')[0]} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25]" />
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors">
-                      <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Check-out Date</label>
-                      <input type="date" name="checkOut" value={formData.checkOut} onChange={handleFormChange} required min={formData.checkIn || new Date().toISOString().split('T')[0]} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25]" />
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">
-                      <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Preferred Room</label>
-                      <select name="room" value={formData.room} onChange={handleFormChange} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25] uppercase">
-                        <option value="any">No Preference</option>
-                        <option value="The Emerald Suite">The Emerald Suite — King Bed · Premier Suite</option>
-                        <option value="The Canopy Loft">The Canopy Loft — Mezzanine Floor · 2 Beds</option>
-                        <option value="The Mist Retreat">The Mist Retreat — Twin Sharing · Cozy Hideaway</option>
-                      </select>
-                    </div>
-                    <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">
-                      <textarea name="message" value={formData.message} onChange={handleFormChange} placeholder="YOUR MESSAGE" rows={3} className="w-full bg-transparent border-none py-4 text-xs tracking-widest focus:ring-0 uppercase placeholder:text-stone-300 resize-none"></textarea>
-                    </div>
-                  </div>
-                  {formStatus === 'error' && <p className="text-red-800 text-[10px] uppercase tracking-wider">Something went wrong. Please try again or call us directly.</p>}
-                  <button
-                    type="submit"
-                    disabled={formStatus === 'sending'}
-                    className="w-full bg-[#1a2e25] text-white py-5 rounded-sm font-bold tracking-[0.3em] text-xs uppercase hover:bg-[#c5a059] transition-all disabled:opacity-60 flex items-center justify-center space-x-3"
-                  >
-                    {formStatus === 'sending' ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /><span>Sending...</span></> : <span>Submit Enquiry</span>}
-                  </button>
-                </form>
-              )}
+              <BookingForm />
             </div>
           </div>
         </div>
@@ -371,13 +302,13 @@ const Home: React.FC = () => {
                   We are thrilled to announce that The Cardamom Cove is now accepting reservations. Secure your retreat in the heart of the Western Ghats.
                 </p>
                 <a
-                  href="tel:+918606677859"
+                  href="tel:+91 6235 62 6334"
                   className="flex items-center space-x-4 bg-[#1a2e25] text-white px-6 py-4 group hover:bg-[#c5a059] transition-all"
                 >
                   <Phone className="w-5 h-5 text-[#c5a059] group-hover:text-white transition-colors flex-shrink-0" />
                   <div>
                     <p className="text-[9px] uppercase tracking-[0.3em] text-stone-400 group-hover:text-white/70 transition-colors">Call to Book</p>
-                    <p className="font-semibold tracking-wider text-lg">+91 8606 677 859</p>
+                    <p className="font-semibold tracking-wider text-lg">+91 6235 62 6334</p>
                   </div>
                 </a>
               </div>

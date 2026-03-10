@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Gallery', path: '/gallery' },
-    { name: 'Rooms', path: '/#rooms' },
+    { name: 'Rooms', path: '/room/emerald' },
     { name: 'Contact', path: '/#contact' },
   ];
 
@@ -88,10 +88,12 @@ const Navbar: React.FC = () => {
                 </Link>
               )
             ))}
-            <button className={`px-6 py-2 rounded-sm transition-all duration-300 uppercase tracking-widest text-[10px] font-bold border ${isScrolledOrNotHome
-              ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]'
-              : 'bg-transparent text-white border-white hover:bg-white hover:text-[#1a2e25]'
-              }`}>
+            <button
+              onClick={() => window.dispatchEvent(new Event('openBookingModal'))}
+              className={`px-6 py-2 rounded-sm transition-all duration-300 uppercase tracking-widest text-[10px] font-bold border ${isScrolledOrNotHome
+                ? 'bg-[#1a2e25] text-white border-[#1a2e25] hover:bg-[#c5a059] hover:border-[#c5a059]'
+                : 'bg-transparent text-white border-white hover:bg-white hover:text-[#1a2e25]'
+                }`}>
               Reserve
             </button>
           </div>
@@ -123,7 +125,13 @@ const Navbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-4">
-            <button className="w-full bg-[#1a2e25] text-white py-4 rounded-sm font-bold tracking-widest uppercase text-xs">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                window.dispatchEvent(new Event('openBookingModal'));
+              }}
+              className="w-full bg-[#1a2e25] text-white py-4 rounded-sm font-bold tracking-widest uppercase text-xs"
+            >
               Book Your Stay
             </button>
           </div>

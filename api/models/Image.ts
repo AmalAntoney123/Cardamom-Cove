@@ -4,6 +4,7 @@ interface IImage extends mongoose.Document {
     url: string;
     title: string;
     category: 'exterior' | 'interior' | 'dining' | 'nature';
+    roomTag?: 'emerald' | 'canopy' | 'mist' | 'none';
 }
 
 const ImageSchema = new mongoose.Schema({
@@ -20,6 +21,12 @@ const ImageSchema = new mongoose.Schema({
         required: [true, 'Please specify the category of this image.'],
         enum: ['exterior', 'interior', 'dining', 'nature'],
     },
+    roomTag: {
+        type: String,
+        required: false,
+        enum: ['emerald', 'canopy', 'mist', 'none'],
+        default: 'none'
+    }
 }, {
     timestamps: true,
 });

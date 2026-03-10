@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="mt-12 flex flex-col md:flex-row justify-between items-center font-light text-stone-500 text-[10px] tracking-[0.2em] uppercase">
-          <p>© 2025 The Cardamom Cove. All rights reserved.</p>
+          <p>© 2026 The Cardamom Cove. All rights reserved.</p>
           <div className="flex space-x-8 mt-6 md:mt-0">
             <span className="cursor-pointer hover:text-white transition-colors">Privacy</span>
             <span className="cursor-pointer hover:text-white transition-colors">Terms</span>
