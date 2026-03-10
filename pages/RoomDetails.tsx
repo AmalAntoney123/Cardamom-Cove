@@ -201,7 +201,7 @@ const RoomDetails: React.FC = () => {
                         <div className="relative group/carousel">
                             <button
                                 onClick={() => scrollGallery('left')}
-                                className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
+                                className={`absolute left-2 md:left-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
                                     canScrollLeft 
                                     ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
                                     : 'opacity-0 -translate-x-4 pointer-events-none'
@@ -212,7 +212,7 @@ const RoomDetails: React.FC = () => {
                             
                             <button
                                 onClick={() => scrollGallery('right')}
-                                className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
+                                className={`absolute right-2 md:right-4 top-[calc(50%-1rem)] -translate-y-1/2 z-20 w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-200 flex items-center justify-center text-stone-600 hover:text-[#c5a059] hover:border-[#c5a059] transition-all duration-300 ${
                                     canScrollRight 
                                     ? 'opacity-100 md:opacity-0 md:group-hover/carousel:opacity-100 translate-x-0' 
                                     : 'opacity-0 translate-x-4 pointer-events-none'
