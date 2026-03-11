@@ -93,11 +93,19 @@ const Gallery: React.FC = () => {
               onClick={() => setSelectedImage(img.url)}
             >
               <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/20 to-transparent z-0"></div>
-              <img
-                src={img.url}
-                alt={img.title}
-                className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
-              />
+              <div className="relative w-full aspect-[4/3] bg-stone-200 animate-pulse">
+                <img
+                  src={img.url}
+                  alt={img.title}
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 transition-all duration-1000 group-hover:scale-105"
+                  onLoad={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.classList.remove('opacity-0', 'absolute', 'inset-0');
+                    target.classList.add('opacity-100');
+                    target.parentElement?.classList.remove('aspect-[4/3]', 'bg-stone-200', 'animate-pulse', 'relative');
+                  }}
+                />
+              </div>
               <div className="absolute inset-0 bg-[#0f1a15]/70 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8 z-10 backdrop-blur-[2px]">
                 <div className="absolute top-4 left-4 bg-[#c5a059] p-2 rounded-full shadow-lg">
                   <Sparkles className="text-white w-4 h-4" />

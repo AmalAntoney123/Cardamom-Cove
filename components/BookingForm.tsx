@@ -64,6 +64,7 @@ const BookingForm: React.FC = () => {
                         <option value="The Emerald Suite">The Emerald Suite — King Bed · Premier Suite</option>
                         <option value="The Canopy Loft">The Canopy Loft — Mezzanine Floor · 2 Beds</option>
                         <option value="The Mist Retreat">The Mist Retreat — Twin Sharing · Cozy Hideaway</option>
+                        <option value="Full Property">Full Property — Exclusive Access to Entire Cove</option>
                     </select>
                 </div>
                 <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">

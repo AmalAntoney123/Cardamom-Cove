@@ -22,7 +22,7 @@ async function sendNotificationEmail(booking: {
     message: string;
 }) {
     const user = process.env.MAIL_USER;
-    const pass = process.env.SMTP_PASS || process.env.MAIL_PASS;
+    const pass = process.env.MAIL_PASS;
     const to = process.env.NOTIFY_EMAIL || user;
 
     if (!user || !pass) {

@@ -7,7 +7,7 @@ export interface IBooking extends mongoose.Document {
     checkIn: Date;
     checkOut: Date;
     message: string;
-    room: 'The Emerald Suite' | 'The Canopy Loft' | 'The Mist Retreat' | 'any';
+    room: 'The Emerald Suite' | 'The Canopy Loft' | 'The Mist Retreat' | 'Full Property' | 'any';
     status: 'pending' | 'confirmed' | 'cancelled';
 }
 
@@ -45,7 +45,7 @@ const BookingSchema = new mongoose.Schema(
         },
         room: {
             type: String,
-            enum: ['The Emerald Suite', 'The Canopy Loft', 'The Mist Retreat', 'any'],
+            enum: ['The Emerald Suite', 'The Canopy Loft', 'The Mist Retreat', 'Full Property', 'any'],
             default: 'any',
         },
         status: {

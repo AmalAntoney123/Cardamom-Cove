@@ -105,6 +105,7 @@ const Admin: React.FC = () => {
     'The Emerald Suite': { chip: 'bg-emerald-100 text-emerald-900 border-emerald-300', dot: 'bg-emerald-600', label: 'Emerald' },
     'The Canopy Loft': { chip: 'bg-amber-100 text-amber-900 border-amber-300', dot: 'bg-amber-500', label: 'Canopy' },
     'The Mist Retreat': { chip: 'bg-sky-100 text-sky-900 border-sky-300', dot: 'bg-sky-500', label: 'Mist' },
+    'Full Property': { chip: 'bg-indigo-100 text-indigo-900 border-indigo-300', dot: 'bg-indigo-600', label: 'Full Property' },
     'any': { chip: 'bg-stone-100 text-stone-700 border-stone-300', dot: 'bg-stone-400', label: 'Any' },
   };
   const STATUS_STYLES: Record<string, string> = {
@@ -183,6 +184,9 @@ const Admin: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'title'>('newest');
+
+  const [galleryPage, setGalleryPage] = useState(1);
+  const GALLERY_PER_PAGE = 10;
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -585,13 +589,13 @@ const Admin: React.FC = () => {
                       type="text"
                       placeholder="SEARCH ARCHIVE..."
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={(e) => { setSearchTerm(e.target.value); setGalleryPage(1); }}
                       className="w-full bg-white border border-stone-200 px-4 py-2 text-[10px] tracking-widest outline-none focus:border-[#c5a059]"
                     />
                   </div>
                   <select
                     value={filterCategory}
-                    onChange={(e) => setFilterCategory(e.target.value)}
+                    onChange={(e) => { setFilterCategory(e.target.value); setGalleryPage(1); }}
                     className="bg-white border border-stone-200 px-4 py-2 text-[10px] tracking-widest uppercase outline-none focus:border-[#c5a059]"
                   >
                     <option value="all">All Categories</option>
@@ -602,7 +606,7 @@ const Admin: React.FC = () => {
                   </select>
                   <select
                     value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
+                    onChange={(e) => { setSortBy(e.target.value as any); setGalleryPage(1); }}
                     className="bg-white border border-stone-200 px-4 py-2 text-[10px] tracking-widest uppercase outline-none focus:border-[#c5a059]"
                   >
                     <option value="newest">Newest First</option>
@@ -622,11 +626,24 @@ const Admin: React.FC = () => {
                   <p className="text-stone-400 italic text-sm">No images match your current filters.</p>
                 </div>
               ) : (
+                <>
                 <div className="space-y-4">
-                  {filteredAndSortedImages.map((img) => (
+                  {filteredAndSortedImages.slice((galleryPage - 1) * GALLERY_PER_PAGE, galleryPage * GALLERY_PER_PAGE).map((img) => (
                     <div key={img.id} className="bg-white p-4 shadow-sm group border border-stone-100 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 relative">
                       <div className="w-full sm:w-32 h-24 flex-shrink-0 overflow-hidden bg-stone-100">
-                        <img src={img.url} alt={img.title} className="w-full h-full object-cover" />
+                        <div className="relative w-full h-full bg-stone-200 animate-pulse">
+                          <img
+                            src={img.url}
+                            alt={img.title}
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500"
+                            onLoad={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.classList.remove('opacity-0');
+                              target.classList.add('opacity-100');
+                              target.parentElement?.classList.remove('bg-stone-200', 'animate-pulse');
+                            }}
+                          />
+                        </div>
                       </div>
 
                       <div className="flex-grow flex flex-col justify-center">
@@ -734,6 +751,28 @@ const Admin: React.FC = () => {
                     </div>
                   ))}
                 </div>
+                {Math.ceil(filteredAndSortedImages.length / GALLERY_PER_PAGE) > 1 && (
+                  <div className="flex items-center justify-between mt-6">
+                    <button
+                      disabled={galleryPage === 1}
+                      onClick={() => setGalleryPage(p => Math.max(1, p - 1))}
+                      className="px-4 py-2 border border-stone-200 text-[9px] uppercase tracking-widest font-bold text-stone-500 hover:bg-stone-50 disabled:opacity-30 transition-colors"
+                    >
+                      Prev
+                    </button>
+                    <span className="text-[10px] uppercase tracking-widest text-stone-400 font-bold">
+                      Page {galleryPage} / {Math.ceil(filteredAndSortedImages.length / GALLERY_PER_PAGE)}
+                    </span>
+                    <button
+                      disabled={galleryPage === Math.ceil(filteredAndSortedImages.length / GALLERY_PER_PAGE)}
+                      onClick={() => setGalleryPage(p => Math.min(Math.ceil(filteredAndSortedImages.length / GALLERY_PER_PAGE), p + 1))}
+                      className="px-4 py-2 border border-stone-200 text-[9px] uppercase tracking-widest font-bold text-stone-500 hover:bg-stone-50 disabled:opacity-30 transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+                </>
               )}
             </div>
           </div>
@@ -927,6 +966,7 @@ const Admin: React.FC = () => {
                                 <option value="The Emerald Suite">The Emerald Suite</option>
                                 <option value="The Canopy Loft">The Canopy Loft</option>
                                 <option value="The Mist Retreat">The Mist Retreat</option>
+                                <option value="Full Property">Full Property</option>
                               </select>
                             </div>
                             <div className="flex gap-2 pt-1">
@@ -1166,6 +1206,7 @@ const Admin: React.FC = () => {
                     <option value="The Emerald Suite">The Emerald Suite</option>
                     <option value="The Canopy Loft">The Canopy Loft</option>
                     <option value="The Mist Retreat">The Mist Retreat</option>
+                    <option value="Full Property">Full Property</option>
                   </select>
                 </div>
                 <div>
