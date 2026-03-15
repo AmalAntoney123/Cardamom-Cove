@@ -18,6 +18,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: CheckCircle2, text: "En-suite Luxury Shower" },
             { icon: AirVent, text: "Air Conditioning" },
             { icon: Flame, text: "Fire Place" },
+            { icon: CheckCircle2, text: "Plantation Access" },
 
         ]
     },
@@ -34,6 +35,8 @@ const ROOM_DATA: Record<string, any> = {
             { icon: Bed, text: "1 Twin Bed" },
             { icon: CheckCircle2, text: "Valley View Deck" },
             { icon: AirVent, text: "Air Conditioning" },
+            { icon: CheckCircle2, text: "Plantation Access" },
+            { icon: CheckCircle2, text: "En-suite Luxury Shower" },
         ],
 
     },
