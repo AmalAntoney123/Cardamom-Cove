@@ -12,6 +12,10 @@ export default async function handler(
     const { id } = req.query;
     await dbConnect();
 
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     if (req.method === 'DELETE') {
         // Check authentication for DELETE
         const authHeader = req.headers.authorization;

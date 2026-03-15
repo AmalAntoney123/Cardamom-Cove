@@ -8,8 +8,14 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret';
 
 function getAdminToken(req: VercelRequest): string | null {
     const auth = req.headers.authorization;
-    if (!auth || !auth.startsWith('Bearer ')) return null;
-    return auth.split(' ')[1];
+    console.log('[api/bookings] Authorization header:', auth);
+    if (!auth || !auth.startsWith('Bearer ')) {
+        console.log('[api/bookings] No Bearer token found in header');
+        return null;
+    }
+    const token = auth.split(' ')[1];
+    console.log('[api/bookings] Extracted token:', token ? `${token.substring(0, 10)}...` : 'null');
+    return token;
 }
 
 async function sendNotificationEmail(booking: {
@@ -72,8 +78,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const token = getAdminToken(req);
         if (!token) return res.status(401).json({ message: 'Unauthorized' });
         try {
+            console.log('[api/bookings] Verifying token with secret:', JWT_SECRET === 'fallback_secret' ? 'FALLBACK' : 'DEFINED');
             jwt.verify(token, JWT_SECRET);
-        } catch {
+            console.log('[api/bookings] Token verified successfully');
+        } catch (err: any) {
+            console.log('[api/bookings] Token verification failed:', err.message);
             return res.status(401).json({ message: 'Invalid token' });
         }
         try {

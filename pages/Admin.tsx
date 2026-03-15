@@ -132,8 +132,22 @@ const Admin: React.FC = () => {
     setIsFetchingBookings(true);
     try {
       const res = await fetch('/api/bookings', { headers: { Authorization: `Bearer ${token}` } });
-      if (res.ok) setBookings(await res.json());
-    } catch (e) { console.error(e); }
+      if (res.ok) {
+        setBookings(await res.json());
+      } else if (res.status === 401) {
+        const data = await res.json();
+        console.error('Unauthorized access to bookings:', data.message);
+        // Clear token if it's invalid
+        localStorage.removeItem('admin_token');
+        setIsLoggedIn(false);
+        setError('Your session has expired. Please log in again.');
+      } else {
+        const errorText = await res.text();
+        console.error('Failed to fetch bookings:', res.status, errorText);
+      }
+    } catch (e) {
+      console.error('Error fetching bookings:', e);
+    }
     finally { setIsFetchingBookings(false); }
   };
 

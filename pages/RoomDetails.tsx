@@ -15,7 +15,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: Coffee, text: "Mini Kitchen" },
             { icon: Wind, text: "Highland Breeze Balcony" },
             { icon: CheckCircle2, text: "King-sized Bed" },
-            { icon: CheckCircle2, text: "En-suite Luxury Bath" },
+            { icon: CheckCircle2, text: "En-suite Luxury Shower" },
             { icon: AirVent, text: "Air Conditioning" },
             { icon: Flame, text: "Fire Place" },
 
@@ -45,7 +45,7 @@ const ROOM_DATA: Record<string, any> = {
         features: [
             { icon: Wind, text: "Mist-covered Mornings" },
             { icon: CheckCircle2, text: "2 Twin Beds" },
-            { icon: CheckCircle2, text: "Attached Bath" },
+            { icon: CheckCircle2, text: "Attached Shower" },
             { icon: CheckCircle2, text: "Plantation Access" }
         ]
     }
