@@ -57,10 +57,13 @@ const Home: React.FC = () => {
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <iframe
             src="https://www.youtube.com/embed/qV1gT4EQlO4?autoplay=1&mute=1&loop=1&playlist=qV1gT4EQlO4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1"
-            className="absolute top-1/2 left-1/2 w-[177.77777778vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 scale-110"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none max-w-none max-h-none scale-105"
+            style={{
+              width: 'max(100vw, 177.78vh)',
+              height: 'max(100vh, 56.25vw)',
+            }}
             frameBorder="0"
             allow="autoplay; fullscreen"
-            style={{ height: 'max(100%, 56.25vw)' }}
           ></iframe>
           <div className="absolute inset-0 bg-[#0f1a15]/60"></div>
         </div>
