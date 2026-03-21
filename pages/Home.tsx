@@ -54,23 +54,25 @@ const Home: React.FC = () => {
     <div className="w-full bg-[#faf9f6]">
       {/* Hero Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0">
-          <img
-            src="/images/hero-img.JPG"
-            alt="Western Ghats View"
-            className="w-full h-full object-cover ken-burns"
-          />
-          <div className="absolute inset-0 bg-[#0f1a15]/50"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <iframe
+            src="https://www.youtube.com/embed/qV1gT4EQlO4?autoplay=1&mute=1&loop=1&playlist=qV1gT4EQlO4&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1"
+            className="absolute top-1/2 left-1/2 w-[177.77777778vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 scale-110"
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            style={{ height: 'max(100%, 56.25vw)' }}
+          ></iframe>
+          <div className="absolute inset-0 bg-[#0f1a15]/60"></div>
         </div>
 
-        <div className="relative text-center px-4 max-w-4xl">
+        <div className="relative text-center px-4 max-w-4xl drop-shadow-2xl">
           <span className="text-[#c5a059] uppercase tracking-[0.4em] text-[10px] font-bold mb-6 block animate-in fade-in slide-in-from-bottom-4 duration-1000">
             Kauwanty, Idukki, Kerala
           </span>
-          <h1 className="text-5xl md:text-8xl text-white font-serif mb-8 leading-tight tracking-tight animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+          <h1 className="text-5xl md:text-8xl text-white font-serif mb-8 leading-tight tracking-tight animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 drop-shadow-lg">
             The Cardamom Cove
           </h1>
-          <p className="text-[#f2f1ec] text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto leading-relaxed italic opacity-90 animate-in fade-in duration-1000 delay-700">
+          <p className="text-[#f2f1ec] text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto leading-relaxed italic opacity-90 animate-in fade-in duration-1000 delay-700 drop-shadow-md">
             "A sanctuary where luxury meets nature in the heart of the Western Ghats."
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 animate-in fade-in duration-1000 delay-1000">
