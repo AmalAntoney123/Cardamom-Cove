@@ -20,9 +20,11 @@ const Home: React.FC = () => {
     if (isPlayerOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isPlayerOpen]);
 
   const closePopup = () => {
@@ -360,7 +362,7 @@ const Home: React.FC = () => {
       )}
       {/* Fullscreen Video Player */}
       {isPlayerOpen && (
-        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-500">
+        <div className="fixed inset-0 z-[200] bg-[#000000] backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-500">
           <button 
             onClick={() => setIsPlayerOpen(false)}
             className="absolute top-6 right-6 md:top-10 md:right-10 z-[210] text-white/50 hover:text-white transition-colors p-3 bg-white/10 rounded-full hover:bg-white/20"
