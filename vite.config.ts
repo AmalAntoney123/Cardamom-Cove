@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { config as dotenvConfig } from 'dotenv';
@@ -35,8 +36,13 @@ function apiDevPlugin() {
           handlerFile = `${root}/api/${parts[1]}/index.ts`;
           // Route: /api/bookings/123  →  api/bookings/[id].ts  + { id: '123' }
         } else if (parts.length === 3) {
-          handlerFile = `${root}/api/${parts[1]}/[id].ts`;
-          params.id = parts[2];
+          const specificFile = `${root}/api/${parts[1]}/${parts[2]}.ts`;
+          if (fs.existsSync(specificFile)) {
+            handlerFile = specificFile;
+          } else {
+            handlerFile = `${root}/api/${parts[1]}/[id].ts`;
+            params.id = parts[2];
+          }
         } else {
           return next();
         }

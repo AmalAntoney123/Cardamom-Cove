@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Lock, LogOut, Plus, Trash2, Image as ImageIcon, CheckCircle2, CalendarDays, Phone, Mail, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, X } from 'lucide-react';
+import { Lock, LogOut, Plus, Trash2, Image as ImageIcon, CheckCircle2, CalendarDays, Phone, Mail, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, X, Send, MessageSquare } from 'lucide-react';
 import { GalleryImage } from '../types';
 
 const Admin: React.FC = () => {
@@ -28,6 +28,12 @@ const Admin: React.FC = () => {
   const [bookingPage, setBookingPage] = useState(1);
   const [showOldBookings, setShowOldBookings] = useState(false);
   const BOOKINGS_PER_PAGE = 10;
+
+  // ── Reply state ──
+  const [isReplying, setIsReplying] = useState(false);
+  const [replyMessage, setReplyMessage] = useState('');
+  const [isSendingReply, setIsSendingReply] = useState(false);
+  const [showReplySuccess, setShowReplySuccess] = useState(false);
 
 
   // ── Admin-add booking ──
@@ -180,6 +186,33 @@ const Admin: React.FC = () => {
       if (res.ok) setBookings(prev => prev.filter(b => b._id !== id));
     } catch (e) { console.error(e); }
     finally { setDeletingBookingId(null); }
+  };
+
+  const handleSendReply = async () => {
+    if (!selectedBooking || !replyMessage.trim()) return;
+    const token = localStorage.getItem('admin_token');
+    setIsSendingReply(true);
+    try {
+      const res = await fetch('/api/bookings/reply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ bookingId: selectedBooking._id, message: replyMessage }),
+      });
+      if (res.ok) {
+        setReplyMessage('');
+        setIsReplying(false);
+        setShowReplySuccess(true);
+        setTimeout(() => setShowReplySuccess(false), 3000);
+      } else {
+        const errorData = await res.json();
+        alert(`Error: ${errorData.message}`);
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to send reply');
+    } finally {
+      setIsSendingReply(false);
+    }
   };
 
   const [uploadedImages, setUploadedImages] = useState<GalleryImage[]>([]);
@@ -938,13 +971,22 @@ const Admin: React.FC = () => {
                         <div className="flex items-start justify-between">
                           <h3 className="font-serif text-xl text-[#1a2e25]">{selectedBooking.name}</h3>
                           <div className="flex items-center gap-2">
-                            {!isEditingDetail && (
-                              <button
-                                onClick={() => { setIsEditingDetail(true); setEditDetail({ checkIn: toDateInput(selectedBooking.checkIn), checkOut: toDateInput(selectedBooking.checkOut), room: selectedBooking.room || 'any' }); }}
-                                className="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] border border-[#c5a059]/40 px-2.5 py-1 hover:bg-[#c5a059]/10 transition-colors"
-                              >Edit</button>
+                            {!isEditingDetail && !isReplying && (
+                              <>
+                                <button
+                                  onClick={() => { setIsEditingDetail(true); setEditDetail({ checkIn: toDateInput(selectedBooking.checkIn), checkOut: toDateInput(selectedBooking.checkOut), room: selectedBooking.room || 'any' }); }}
+                                  className="text-[9px] uppercase tracking-widest font-bold text-[#c5a059] border border-[#c5a059]/40 px-2.5 py-1 hover:bg-[#c5a059]/10 transition-colors"
+                                >Edit</button>
+                                <button
+                                  onClick={() => { setIsReplying(true); setReplyMessage(`Hi ${selectedBooking.name},\n\nThank you for your enquiry at The Cardamom Cove.\n\n`); }}
+                                  className="text-[9px] uppercase tracking-widest font-bold text-white bg-[#1a2e25] px-2.5 py-1 hover:bg-[#c5a059] transition-colors flex items-center gap-1.5"
+                                >
+                                  <MessageSquare className="w-3 h-3" />
+                                  Reply
+                                </button>
+                              </>
                             )}
-                            <button onClick={() => { setSelectedBooking(null); setIsEditingDetail(false); }} className="text-stone-300 hover:text-stone-600 transition-colors">
+                            <button onClick={() => { setSelectedBooking(null); setIsEditingDetail(false); setIsReplying(false); }} className="text-stone-300 hover:text-stone-600 transition-colors">
                               <X className="w-4 h-4" />
                             </button>
                           </div>
@@ -953,6 +995,12 @@ const Admin: React.FC = () => {
                         {conflictIds.has(selectedBooking._id) && (
                           <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[10px] uppercase tracking-wider font-bold px-3 py-2">
                             <AlertTriangle className="w-3.5 h-3.5" /> Room Conflict Detected
+                          </div>
+                        )}
+
+                        {showReplySuccess && (
+                          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] uppercase tracking-wider font-bold px-3 py-2 animate-in slide-in-from-top-1 duration-300">
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Reply Sent Successfully
                           </div>
                         )}
 
@@ -1015,6 +1063,39 @@ const Admin: React.FC = () => {
 
                         {selectedBooking.message && (
                           <p className="text-stone-500 text-sm font-light italic border-l-2 border-[#c5a059]/40 pl-3">"{selectedBooking.message}"</p>
+                        )}
+
+                        {/* ── Reply Form ── */}
+                        {isReplying && (
+                          <div className="space-y-3 border border-[#1a2e25]/30 p-4 bg-[#faf9f6] animate-in fade-in slide-in-from-top-2 duration-300">
+                            <p className="text-[9px] uppercase tracking-widest font-bold text-[#1a2e25] flex items-center gap-1.5">
+                              <Send className="w-3 h-3 text-[#c5a059]" /> Send Reply Email
+                            </p>
+                            <textarea
+                              value={replyMessage}
+                              onChange={e => setReplyMessage(e.target.value)}
+                              rows={8}
+                              placeholder="Type your message to the guest..."
+                              className="w-full border border-stone-200 px-3 py-2 text-sm text-[#1a2e25] focus:outline-none focus:border-[#c5a059] bg-white resize-none"
+                            />
+                            <div className="flex gap-2">
+                              <button
+                                onClick={handleSendReply}
+                                disabled={isSendingReply || !replyMessage.trim()}
+                                className="flex-1 flex items-center justify-center gap-1.5 text-[9px] uppercase tracking-widest font-bold bg-[#1a2e25] text-white py-2.5 hover:bg-[#c5a059] transition-colors disabled:opacity-60"
+                              >
+                                {isSendingReply ? <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Send className="w-3 h-3" />}
+                                Send Message
+                              </button>
+                              <button
+                                onClick={() => { setIsReplying(false); setReplyMessage(''); }}
+                                className="px-4 text-[9px] uppercase tracking-widest font-bold border border-stone-200 text-stone-500 hover:bg-stone-50 transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                            <p className="text-[8px] text-stone-400 italic">This message will be sent to <strong>{selectedBooking.email}</strong> with the Cove header and footer.</p>
+                          </div>
                         )}
 
                         <p className="text-[9px] text-stone-400 uppercase tracking-widest">Received {fmt(selectedBooking.createdAt)}</p>
