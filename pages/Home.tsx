@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail, X, Sparkles } from 'lucide-react';
+import { ChevronRight, Wind, Coffee, Trees, Heart, Flame, Car, MapPin, Phone, Mail, X, Sparkles, Volume2, Maximize2, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import BookingForm from '../components/BookingForm';
 
 const Home: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [isPlayerOpen, setIsPlayerOpen] = useState(false);
 
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem('hasSeenBookingOpen');
@@ -13,6 +14,16 @@ const Home: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
+  // Prevent scroll when player is open
+  useEffect(() => {
+    if (isPlayerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isPlayerOpen]);
 
   const closePopup = () => {
     setShowPopup(false);
@@ -67,6 +78,17 @@ const Home: React.FC = () => {
           ></iframe>
           <div className="absolute inset-0 bg-[#0f1a15]/60"></div>
         </div>
+
+        {/* Enjoy in Fullscreen Button */}
+        <button 
+          onClick={() => setIsPlayerOpen(true)}
+          className="absolute bottom-10 right-10 z-20 flex items-center bg-white/10 backdrop-blur-md border border-white/20 p-3 md:px-6 md:py-4 rounded-full text-white hover:bg-white/20 transition-all group animate-in fade-in slide-in-from-right-8 duration-1000 delay-1000"
+        >
+          <div className="w-8 h-8 rounded-full bg-[#c5a059] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <Play className="w-4 h-4 text-[#0f1a15] fill-[#0f1a15]" />
+          </div>
+          <span className="hidden md:inline ml-3 text-[10px] uppercase tracking-[0.2em] font-bold">Experience</span>
+        </button>
 
         <div className="relative text-center px-4 max-w-4xl drop-shadow-2xl">
           <span className="text-[#c5a059] uppercase tracking-[0.4em] text-[10px] font-bold mb-6 block animate-in fade-in slide-in-from-bottom-4 duration-1000">
@@ -334,6 +356,32 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+      {/* Fullscreen Video Player */}
+      {isPlayerOpen && (
+        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-500">
+          <button 
+            onClick={() => setIsPlayerOpen(false)}
+            className="absolute top-6 right-6 md:top-10 md:right-10 z-[210] text-white/50 hover:text-white transition-colors p-3 bg-white/10 rounded-full hover:bg-white/20"
+            aria-label="Close video"
+          >
+            <X className="w-6 h-6 md:w-8 md:h-8" />
+          </button>
+          
+          <div className="w-full max-w-6xl aspect-video relative shadow-2xl animate-in zoom-in duration-500 px-4 md:px-0">
+            <iframe
+              src="https://www.youtube.com/embed/qV1gT4EQlO4?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
+              className="absolute inset-0 w-full h-full"
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              title="Cardamom Cove Experience"
+            ></iframe>
+          </div>
+          
+          <p className="mt-8 text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium hidden md:block">
+            Esc to close • Cinematic Experience
+          </p>
         </div>
       )}
     </div>
