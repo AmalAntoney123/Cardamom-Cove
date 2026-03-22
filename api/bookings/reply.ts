@@ -36,14 +36,12 @@ async function sendReplyEmail(booking: { name: string, email: string }, message:
 <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;background:#faf9f6;padding:32px;border:1px solid #e5e0d8;">
   <div style="text-align:center;margin-bottom:24px;">
     <h2 style="color:#1a2e25;font-size:24px;margin-bottom:4px;">The Cardamom Cove</h2>
-    <p style="color:#c5a059;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:0;">Luxury Plantation Stay</p>
+    <p style="color:#c5a059;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:0;">Boutique Plantation Retreat</p>
   </div>
   <hr style="border:none;border-top:1px solid #e5e0d8;margin:20px 0;" />
   
   <div style="color:#333;font-size:15px;line-height:1.6;">
-    <p>Dear ${booking.name},</p>
     <div style="white-space: pre-wrap;">${message}</div>
-    <p style="margin-top:32px;">Warm regards,<br/><strong>The Cardamom Cove Team</strong></p>
   </div>
 
   <hr style="border:none;border-top:1px solid #e5e0d8;margin:32px 0 20px 0;" />
