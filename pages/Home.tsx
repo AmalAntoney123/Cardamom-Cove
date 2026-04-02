@@ -4,16 +4,7 @@ import { Link } from 'react-router-dom';
 import BookingForm from '../components/BookingForm';
 
 const Home: React.FC = () => {
-  const [showPopup, setShowPopup] = useState(false);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
-
-  useEffect(() => {
-    const hasSeenPopup = sessionStorage.getItem('hasSeenBookingOpen');
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => setShowPopup(true), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   // Prevent scroll when player is open
   useEffect(() => {
@@ -27,16 +18,8 @@ const Home: React.FC = () => {
     };
   }, [isPlayerOpen]);
 
-  const closePopup = () => {
-    setShowPopup(false);
-    sessionStorage.setItem('hasSeenBookingOpen', 'true');
-  };
-
   const openBookingForm = () => {
-    closePopup();
-    setTimeout(() => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const rooms = [
@@ -236,7 +219,7 @@ const Home: React.FC = () => {
                   >
                     Reserve Full Property
                   </button>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col justify-center">
                     <span className="text-stone-500 line-through text-sm">Standard Rate: ₹40,000</span>
                     <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest mt-1">Limited Time Offer</span>
                   </div>
@@ -343,73 +326,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Booking Open Popup */}
-      {showPopup && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-[#0f1a15]/40 backdrop-blur-sm animate-in fade-in duration-700">
-          <div className="max-w-xl w-full bg-[#faf9f6]/95 backdrop-blur-md shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] border border-[#c5a059]/20 p-12 relative overflow-hidden animate-in zoom-in slide-in-from-bottom-8 duration-700">
-            {/* Decorative Element */}
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <Trees className="w-32 h-32 text-[#c5a059]" />
-            </div>
-
-            <button
-              onClick={closePopup}
-              className="absolute top-6 right-6 text-stone-400 hover:text-[#c5a059] transition-colors"
-            >
-              <X className="w-6 h-6 stroke-1" />
-            </button>
-
-            <div className="relative z-10 space-y-8">
-              <div className="flex items-center space-x-3 text-[#c5a059]">
-                <Sparkles className="w-5 h-5" />
-                <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Bookings Now Open</span>
-              </div>
-
-              <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-serif text-[#1a2e25] leading-tight">
-                  Your Stay in the Cove <span className="italic">Awaits</span>
-                </h2>
-                <div className="w-16 h-[1px] bg-[#c5a059]"></div>
-              </div>
-
-              <div className="space-y-6 text-stone-600 font-light leading-relaxed">
-                <p>
-                  We are thrilled to announce that The Cardamom Cove is now accepting reservations. Secure your retreat in the heart of the Western Ghats.
-                </p>
-                <div className="p-4 bg-emerald-50/50 border border-[#c5a059]/10 rounded-sm">
-                  <p className="text-[#1a2e25] font-serif text-lg mb-1">Inauguration Bonus</p>
-                  <p className="text-xs text-stone-500 italic">Full Property Booking at ₹35,000 for a limited time.</p>
-                </div>
-                <a
-                  href="tel:+91 6235 62 6334"
-                  className="flex items-center space-x-4 bg-[#1a2e25] text-white px-6 py-4 group hover:bg-[#c5a059] transition-all"
-                >
-                  <Phone className="w-5 h-5 text-[#c5a059] group-hover:text-white transition-colors flex-shrink-0" />
-                  <div>
-                    <p className="text-[9px] uppercase tracking-[0.3em] text-stone-400 group-hover:text-white/70 transition-colors">Call to Book</p>
-                    <p className="font-semibold tracking-wider text-lg">+91 6235 62 6334</p>
-                  </div>
-                </a>
-              </div>
-
-              <div className="space-y-3">
-                <button
-                  onClick={openBookingForm}
-                  className="w-full bg-[#c5a059] text-[#0f1a15] py-5 font-bold tracking-[0.3em] text-[10px] uppercase hover:bg-[#1a2e25] hover:text-white transition-all"
-                >
-                  Book a Room
-                </button>
-                <button
-                  onClick={closePopup}
-                  className="w-full bg-transparent text-stone-400 py-2 font-bold tracking-[0.3em] text-[10px] uppercase hover:text-[#1a2e25] transition-all"
-                >
-                  Explore the Cove
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       {/* Fullscreen Video Player */}
       {isPlayerOpen && (
         <div className="fixed inset-0 z-[200] bg-[#000000] backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-500">
