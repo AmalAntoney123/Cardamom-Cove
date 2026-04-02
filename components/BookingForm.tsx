@@ -61,10 +61,10 @@ const BookingForm: React.FC = () => {
                     <label className="block text-[9px] uppercase tracking-widest text-stone-400 pt-4 pb-1">Preferred Room</label>
                     <select name="room" value={formData.room} onChange={handleFormChange} className="w-full bg-transparent border-none py-2 text-xs tracking-widest focus:ring-0 text-[#1a2e25] uppercase">
                         <option value="any">No Preference</option>
-                        <option value="The Emerald Suite">The Emerald Suite — King Bed · Premier Suite</option>
-                        <option value="The Canopy Loft">The Canopy Loft — Mezzanine Floor · 2 Beds</option>
-                        <option value="The Mist Retreat">The Mist Retreat — Twin Sharing · Cozy Hideaway</option>
-                        <option value="Full Property">Full Property — Exclusive Access to Entire Cove</option>
+                        <option value="The Emerald Suite">The Emerald Suite — ₹16,499 per night</option>
+                        <option value="The Canopy Loft">The Canopy Loft — ₹18,799 per night</option>
+                        <option value="The Mist Retreat">The Mist Retreat — ₹8,699 per night</option>
+                        <option value="Full Property">Full Property — ₹35,000 (Inauguration Offer)</option>
                     </select>
                 </div>
                 <div className="border-b border-stone-200 focus-within:border-[#c5a059] transition-colors sm:col-span-2">

@@ -10,7 +10,6 @@ const ROOM_DATA: Record<string, any> = {
         subtitle: "A sophisticated sanctuary offering refined luxury",
         description: "Experience the pinnacle of luxury in our Premier Suite. Nestled amidst the cardamom plantation, the Emerald Suite features expansive windows that frame the breathtaking Western Ghats. A plush king-sized bed, elegantly appointed interiors, and a private balcony seamlessly blend indoor comfort with nature's grandeur.",
         heroImage: "/images/emerald/emerald-1.png",
-
         features: [
             { icon: Coffee, text: "Mini Kitchen" },
             { icon: Wind, text: "Highland Breeze Balcony" },
@@ -19,15 +18,14 @@ const ROOM_DATA: Record<string, any> = {
             { icon: AirVent, text: "Air Conditioning" },
             { icon: Flame, text: "Fire Place" },
             { icon: CheckCircle2, text: "Plantation Access" },
-
-        ]
+        ],
+        price: "16,499"
     },
     canopy: {
         name: "The Canopy Loft",
         subtitle: "Elevated comfort amidst the trees",
         description: "An architectural marvel featuring a spacious mezzanine floor. The Canopy Loft split-level design ensures ample space, making it perfect for families or small groups. Wake up to the sound of birds and step out onto your elevated deck to take in the serene surroundings.",
         heroImage: "/images/canopy/canopy-1.png",
-
         features: [
             { icon: Coffee, text: "Mini Kitchen" },
             { icon: Flame, text: "Cozy Mezzanine" },
@@ -38,7 +36,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: CheckCircle2, text: "Plantation Access" },
             { icon: CheckCircle2, text: "En-suite Luxury Shower" },
         ],
-
+        price: "18,799"
     },
     mist: {
         name: "The Mist Retreat",
@@ -50,7 +48,8 @@ const ROOM_DATA: Record<string, any> = {
             { icon: CheckCircle2, text: "2 Twin Beds" },
             { icon: CheckCircle2, text: "Attached Shower" },
             { icon: CheckCircle2, text: "Plantation Access" }
-        ]
+        ],
+        price: "8,699"
     }
 };
 
@@ -176,9 +175,14 @@ const RoomDetails: React.FC = () => {
                     <div className="lg:col-span-1 relative">
                         <div className="sticky top-32 bg-white p-8 shadow-xl border border-stone-100 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
 
+                            <div className="flex justify-between items-baseline mb-6">
+                                <span className="text-stone-400 text-[10px] uppercase tracking-widest">Rate per night</span>
+                                <span className="text-3xl font-serif text-[#1a2e25]">₹{room.price}</span>
+                            </div>
+
                             <button
                                 onClick={() => window.dispatchEvent(new Event('openBookingModal'))}
-                                className="w-full bg-[#1a2e25] text-white py-4 rounded-sm font-bold tracking-[0.2em] text-xs uppercase hover:bg-[#c5a059] transition-colors mb-6"
+                                className="w-full bg-[#1a2e25] text-white py-4 rounded-sm font-bold tracking-[0.2em] text-xs uppercase hover:bg-[#c5a059] transition-colors mb-6 shadow-lg shadow-emerald-950/10"
                             >
                                 Reserve This Room
                             </button>

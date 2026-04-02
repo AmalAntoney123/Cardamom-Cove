@@ -45,21 +45,24 @@ const Home: React.FC = () => {
       name: "The Emerald Suite",
       description: "A sophisticated sanctuary offering refined luxury with a king-sized view of the Western Ghats.",
       img: "/images/emerald/emerald-1.png",
-      features: "Mini Kitchen • King Bed • Premier Suite"
+      features: "Mini Kitchen • King Bed • Premier Suite",
+      price: "16,499"
     },
     {
       id: "canopy",
       name: "The Canopy Loft",
       description: "An architectural marvel featuring a spacious mezzanine floor and two beds, perfect for elevated comfort.",
       img: "/images/canopy/canopy-1.png",
-      features: "Mini Kitchen • Mezzanine Floor • 2 Beds"
+      features: "Mini Kitchen • Mezzanine Floor • 2 Beds",
+      price: "18,799"
     },
     {
       id: "mist",
       name: "The Mist Retreat",
       description: "An intimate and cozy escape designed for companions, featuring bespoke twin sharing beds and garden access.",
       img: "/images/mist/mist-1.png",
-      features: "Mini Kitchen • Twin Sharing Beds • Cozy Hideaway"
+      features: "Mini Kitchen • Twin Sharing Beds • Cozy Hideaway",
+      price: "8,699"
     }
   ];
 
@@ -82,7 +85,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* Enjoy in Fullscreen Button */}
-        <button 
+        <button
           onClick={() => setIsPlayerOpen(true)}
           className="absolute bottom-10 right-10 z-20 flex items-center bg-white/10 backdrop-blur-md border border-white/20 p-3 md:px-6 md:py-4 rounded-full text-white hover:bg-white/20 transition-all group animate-in fade-in slide-in-from-right-8 duration-1000 delay-1000"
         >
@@ -191,7 +194,8 @@ const Home: React.FC = () => {
                     alt={room.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#0f1a15]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-[#0f1a15]/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#0f1a15]/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <span className="text-[#c5a059] text-xs font-bold tracking-widest uppercase">{room.features}</span>
                   </div>
                 </div>
@@ -205,6 +209,48 @@ const Home: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Full Property Inauguration offer */}
+          <div className="mt-24 bg-[#1a2e25] p-12 md:p-20 relative overflow-hidden reveal">
+            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+              <Trees className="w-64 h-64 text-[#c5a059]" />
+            </div>
+
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-8">
+                <div className="inline-flex items-center space-x-3 text-[#c5a059]">
+                  <Sparkles className="w-5 h-5" />
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Inauguration Bonus</span>
+                </div>
+                <h3 className="text-4xl md:text-5xl font-serif text-white leading-tight">
+                  Exclusive Full-Property Retreat for <span className="text-[#c5a059]">₹35,000</span>
+                </h3>
+                <p className="text-stone-400 font-light leading-relaxed">
+                  Experience the ultimate privacy by booking all three sanctuaries for your group. Enjoy exclusive access to the entire Cardamom Cove estate at a special introductory rate.
+                </p>
+                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 pt-4">
+                  <button
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="bg-[#c5a059] text-[#0f1a15] px-10 py-4 rounded-sm font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-white transition-all shadow-lg"
+                  >
+                    Reserve Full Property
+                  </button>
+                  <div className="flex flex-col">
+                    <span className="text-stone-500 line-through text-sm">Standard Rate: ₹40,000</span>
+                    <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest mt-1">Limited Time Offer</span>
+                  </div>
+                </div>
+              </div>
+              <div className="relative h-80 md:h-full min-h-[300px]">
+                <img
+                  src="/images/retreat_view.png"
+                  alt="Full Villa View"
+                  className="w-full h-full object-cover rounded-sm opacity-80"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1a2e25]/60 md:to-transparent"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -330,6 +376,10 @@ const Home: React.FC = () => {
                 <p>
                   We are thrilled to announce that The Cardamom Cove is now accepting reservations. Secure your retreat in the heart of the Western Ghats.
                 </p>
+                <div className="p-4 bg-emerald-50/50 border border-[#c5a059]/10 rounded-sm">
+                  <p className="text-[#1a2e25] font-serif text-lg mb-1">Inauguration Bonus</p>
+                  <p className="text-xs text-stone-500 italic">Full Property Booking at ₹35,000 for a limited time.</p>
+                </div>
                 <a
                   href="tel:+91 6235 62 6334"
                   className="flex items-center space-x-4 bg-[#1a2e25] text-white px-6 py-4 group hover:bg-[#c5a059] transition-all"
@@ -363,14 +413,14 @@ const Home: React.FC = () => {
       {/* Fullscreen Video Player */}
       {isPlayerOpen && (
         <div className="fixed inset-0 z-[200] bg-[#000000] backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-500">
-          <button 
+          <button
             onClick={() => setIsPlayerOpen(false)}
             className="absolute top-6 right-6 md:top-10 md:right-10 z-[210] text-white/50 hover:text-white transition-colors p-3 bg-white/10 rounded-full hover:bg-white/20"
             aria-label="Close video"
           >
             <X className="w-6 h-6 md:w-8 md:h-8" />
           </button>
-          
+
           <div className="w-full max-w-6xl aspect-video relative shadow-2xl animate-in zoom-in duration-500 px-4 md:px-0">
             <iframe
               src="https://www.youtube.com/embed/qV1gT4EQlO4?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
@@ -380,7 +430,7 @@ const Home: React.FC = () => {
               title="Cardamom Cove Experience"
             ></iframe>
           </div>
-          
+
           <p className="mt-8 text-white/40 text-[10px] uppercase tracking-[0.3em] font-medium hidden md:block">
             Esc to close • Cinematic Experience
           </p>
