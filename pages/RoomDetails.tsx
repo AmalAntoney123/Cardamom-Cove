@@ -18,8 +18,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: AirVent, text: "Air Conditioning" },
             { icon: Flame, text: "Fire Place" },
             { icon: CheckCircle2, text: "Plantation Access" },
-        ],
-        price: "16,499"
+        ]
     },
     canopy: {
         name: "The Canopy Loft",
@@ -35,8 +34,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: AirVent, text: "Air Conditioning" },
             { icon: CheckCircle2, text: "Plantation Access" },
             { icon: CheckCircle2, text: "En-suite Luxury Shower" },
-        ],
-        price: "18,799"
+        ]
     },
     mist: {
         name: "The Mist Retreat",
@@ -48,8 +46,7 @@ const ROOM_DATA: Record<string, any> = {
             { icon: CheckCircle2, text: "2 Twin Beds" },
             { icon: CheckCircle2, text: "Attached Shower" },
             { icon: CheckCircle2, text: "Plantation Access" }
-        ],
-        price: "8,699"
+        ]
     }
 };
 
@@ -176,8 +173,7 @@ const RoomDetails: React.FC = () => {
                         <div className="sticky top-32 bg-white p-8 shadow-xl border border-stone-100 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
 
                             <div className="flex justify-between items-baseline mb-6">
-                                <span className="text-stone-400 text-[10px] uppercase tracking-widest">Rate per night</span>
-                                <span className="text-3xl font-serif text-[#1a2e25]">₹{room.price}</span>
+                                <span className="text-stone-400 text-[10px] uppercase tracking-widest">Available for Booking</span>
                             </div>
 
                             <button

@@ -28,24 +28,21 @@ const Home: React.FC = () => {
       name: "The Emerald Suite",
       description: "A sophisticated sanctuary offering refined luxury with a king-sized view of the Western Ghats.",
       img: "/images/emerald/emerald-1.png",
-      features: "Mini Kitchen • King Bed • Premier Suite",
-      price: "16,499"
+      features: "Mini Kitchen • King Bed • Premier Suite"
     },
     {
       id: "canopy",
       name: "The Canopy Loft",
       description: "An architectural marvel featuring a spacious mezzanine floor and two beds, perfect for elevated comfort.",
       img: "/images/canopy/canopy-1.png",
-      features: "Mini Kitchen • Mezzanine Floor • 2 Beds",
-      price: "18,799"
+      features: "Mini Kitchen • Mezzanine Floor • 2 Beds"
     },
     {
       id: "mist",
       name: "The Mist Retreat",
       description: "An intimate and cozy escape designed for companions, featuring bespoke twin sharing beds and garden access.",
       img: "/images/mist/mist-1.png",
-      features: "Mini Kitchen • Twin Sharing Beds • Cozy Hideaway",
-      price: "8,699"
+      features: "Mini Kitchen • Twin Sharing Beds • Cozy Hideaway"
     }
   ];
 
@@ -194,47 +191,7 @@ const Home: React.FC = () => {
             ))}
           </div>
 
-          {/* Full Property Inauguration offer */}
-          <div className="mt-24 bg-[#1a2e25] p-12 md:p-20 relative overflow-hidden reveal">
-            <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
-              <Trees className="w-64 h-64 text-[#c5a059]" />
-            </div>
 
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <div className="inline-flex items-center space-x-3 text-[#c5a059]">
-                  <Sparkles className="w-5 h-5" />
-                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Inauguration Bonus</span>
-                </div>
-                <h3 className="text-4xl md:text-5xl font-serif text-white leading-tight">
-                  Exclusive Full-Property Retreat for <span className="text-[#c5a059]">₹35,000</span>
-                </h3>
-                <p className="text-stone-400 font-light leading-relaxed">
-                  Experience the ultimate privacy by booking all three sanctuaries for your group. Enjoy exclusive access to the entire Cardamom Cove estate at a special introductory rate.
-                </p>
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8 pt-4">
-                  <button
-                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="bg-[#c5a059] text-[#0f1a15] px-10 py-4 rounded-sm font-bold tracking-[0.2em] text-[10px] uppercase hover:bg-white transition-all shadow-lg"
-                  >
-                    Reserve Full Property
-                  </button>
-                  <div className="flex flex-col justify-center">
-                    <span className="text-stone-500 line-through text-sm">Standard Rate: ₹40,000</span>
-                    <span className="text-[#c5a059] text-xs font-bold uppercase tracking-widest mt-1">Limited Time Offer</span>
-                  </div>
-                </div>
-              </div>
-              <div className="relative h-80 md:h-full min-h-[300px]">
-                <img
-                  src="/images/retreat_view.png"
-                  alt="Full Villa View"
-                  className="w-full h-full object-cover rounded-sm opacity-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1a2e25]/60 md:to-transparent"></div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
