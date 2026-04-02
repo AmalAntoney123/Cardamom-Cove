@@ -113,7 +113,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
             <div className="relative reveal-left">
               <img
-                src="/images/sanctuary-img.jpg"
+                src="/images/sanctuary-img.png"
                 alt="Idukki Landscape"
                 className="w-full h-[650px] object-cover rounded-sm shadow-2xl relative z-10"
               />
